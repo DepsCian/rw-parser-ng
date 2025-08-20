@@ -1,13 +1,26 @@
 {
-  "name": "rw-parser",
-  "version": "1.5.0",
-  "description": "Parses RenderWare DFF and TXD files into usable format!",
-  "author": "Timic3 & Megadreams",
+  "name": "rw-parser-ng",
+  "version": "2.0.0",
+  "description": "Parses RenderWare DFF, TXD and IFP files into usable format!",
+  "author": {
+    "name": "DepsCian",
+    "url": "https://github.com/DepsCian"
+  },
+  "contributors": [
+    {
+      "name": "Timic3",
+      "url": "https://github.com/Timic3"
+    },
+    {
+      "name": "MegadreamsBE",
+      "url": "https://github.com/MegadreamsBE"
+    }
+  ],
   "license": "GPL-3.0",
-  "homepage": "https://github.com/Timic3/rw-parser#readme",
+  "homepage": "https://github.com/DepsCian/rw-parser-ng#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Timic3/rw-parser.git"
+    "url": "git+https://github.com/DepsCian/rw-parser-ng.git"
   },
   "keywords": [
     "gta",
@@ -19,7 +32,10 @@
     "iii",
     "renderware",
     "parser",
-    "rw-parser"
+    "rw-parser",
+    "dff",
+    "txd",
+    "ifp"
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

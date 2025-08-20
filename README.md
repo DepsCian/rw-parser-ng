@@ -1,70 +1,88 @@
-# RenderWare Binary Stream Parser
-[![npm](https://img.shields.io/npm/v/rw-parser.svg)](https://www.npmjs.com/package/rw-parser)
-[![NPM](https://img.shields.io/npm/l/rw-parser.svg)](https://github.com/Timic3/rw-parser/blob/master/LICENSE)
+# RenderWare Binary Stream Parser NG
 
-Parses RenderWare DFF and TXD files into usable format!
+[![npm](https://img.shields.io/npm/v/rw-parser-ng.svg)](https://www.npmjs.com/package/rw-parser-ng)
+[![NPM](https://img.shields.io/npm/l/rw-parser-ng.svg)](https://github.com/DepsCian/rw-parser-ng/blob/master/LICENSE)
 
-## Used in projects
+Parses RenderWare files (`.dff`, `.txd`, `.ifp`) into a usable format.
 
-None yet, but feel free to contact us, if you're using the parser in your projects. According to our testings, this parser was successfully used to display GTA: SA models in a web browser without much hassle.
+This is a fork of the original [rw-parser](https://github.com/Timic3/rw-parser) by Timic3, which is no longer active maintained. This version aims to continue development, fix bugs, and add new features.
+
+## Features
+
+*   **DFF (Model) Parsing:** Extracts geometry, materials, frames, and skinning data.
+*   **TXD (Texture Dictionary) Parsing:** Extracts texture information, including name, resolution and pixel data.
+*   **IFP (Animation) Parsing:** Extracts animation data, including bone names, keyframes, and timings.
+*   **Cross-Platform:** Works in both Node.js and modern web browsers.
+*   **TypeScript Support:** Fully typed for a better development experience.
+
+## Installation
+
+Install `rw-parser-ng` using npm:
+
+```bash
+npm install --save rw-parser-ng
+```
 
 ## Usage
 
- 1. Install **rw-parser** using `npm install --save rw-parser`
- 2. Import it either by using plain require:
-    ```js
-    const { DffParser } = require('rw-parser');
-    // or
-    const DffParser = require('rw-parser').DffParser;
-    ```
-    or ES6 syntax:
-    ```js
-    import { DffParser } from 'rw-parser';
-    ```
+### ES6 Module
 
-The beauty of this is you can use it within browser or as a backend with Node.js!
-    
-**Documentation is not done yet but feel free to ask questions in [discussions](https://github.com/Timic3/rw-parser/discussions).**
-
-## Example
-
-You can parse a DFF and TXD object with the following code:
-
-```ts
-import { DffParser, TxdParser } from 'rw-parser';
-
-// All types are now exported in index
-import type { RwDff, RwTxd } from 'rw-parser';
-
-import { Buffer } from 'buffer';
+```javascript
+import { DffParser, TxdParser, IfpParser } from 'rw-parser-ng';
 import { readFileSync } from 'fs';
 
-// Assuming top-level await is supported
-// Can be used with browser as well
-const resourceUri = 'http://localhost:5321/assets/infernus.dff';
-const dffResource = (await fetch(resourceUri)).arrayBuffer();
+// DFF
+const dffBuffer = readFileSync('path/to/your/model.dff');
+const dffParser = new DffParser(dffBuffer);
+const dffData = dffParser.parse();
+console.log(dffData);
 
-// Pass Buffer here. If you are developing browser application, use
-// a browser shim, like: https://github.com/feross/buffer
-const dffParser = new DffParser(Buffer.from(dffResource));
+// TXD
+const txdBuffer = readFileSync('path/to/your/textures.txd');
+const txdParser = new TxdParser(txdBuffer);
+const txdData = txdParser.parse();
+console.log(txdData);
 
-// TXD parsing is practically same, this example just shows
-// how to parse via local filesystem in Node
-const txdResource = readFileSync('./assets/infernus.txd');
-const txdParser = new TxdParser(txdResource);
+// IFP
+const ifpBuffer = readFileSync('path/to/your/animation.ifp');
+const ifpParser = new IfpParser(ifpBuffer);
+const ifpData = ifpParser.parse();
+console.log(ifpData);
+```
 
-// Parse TXD and DFF, which will return parsed structure
-const txd: RwTxd = txdParser.parse();
-const dff: RwDff = dffParser.parse();
+### Browser Usage
+
+This library can also be used in the browser. You will need a bundler like Webpack or Rollup to handle the Node.js `Buffer` dependency.
+
+```javascript
+import { DffParser } from 'rw-parser-ng';
+
+async function parseDffFromUrl(url) {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer); // Requires Buffer polyfill
+
+    const dffParser = new DffParser(buffer);
+    const dffData = dffParser.parse();
+    console.log(dffData);
+}
+
+parseDffFromUrl('path/to/your/model.dff');
 ```
 
 ## Development
 
- 1. Clone the repository or download the source code [here](https://github.com/Timic3/rw-parser/archive/master.zip)
- 2. Install dependencies using `npm install`
- 3. Compile TypeScript source files using `npm run build`
- 4. Run tests with `npm run tests` or tinker with the code a bit, CLI tool is coming soon as well
+1.  Clone the repository: `git clone https://github.com/DepsCian/rw-parser-ng.git`
+2.  Install dependencies: `npm install`
+3.  Build the project: `npm run build`
+4.  Run tests: `npm test`
 
-Optionally, you may set up a task that watches for file changes: `npm run dev` or `tsc -p tsconfig.json --watch`.
+To watch for changes during development, use `npm run dev`.
 
-Please note that this project is still under heavy development. **Changes to output structure may happen, so be careful using it in production environment!** If you have any questions or problems, feel free to open a [discussion](https://github.com/Timic3/rw-parser/discussions).
+## Contributing
+
+Contributions are welcome! Please feel free to open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the GPL-3.0 License. See the [LICENSE](LICENSE) file for details.
