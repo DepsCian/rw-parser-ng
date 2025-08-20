@@ -34,7 +34,8 @@
     "build": "tsc -p tsconfig.json",
     "dev": "tsc -p tsconfig.json --watch",
     "prepare": "npm run build",
-    "test": "jest"
+    "test": "jest",
+    "sort:models": "tsc && node lib/scripts/sort_models.js"
   },
   "files": [
     "lib",

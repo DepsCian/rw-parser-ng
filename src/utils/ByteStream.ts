@@ -25,6 +25,12 @@ export class ByteStream {
         return uint32;
     }
 
+    public readInt16() {
+        const int16 = this._stream.readInt16LE(this._cursor);
+        this._cursor += 2;
+        return int16;
+    }
+
     public readInt32() {
         const int32 = this._stream.readInt32LE(this._cursor);
         this._cursor += 4;

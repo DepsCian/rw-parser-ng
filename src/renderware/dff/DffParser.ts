@@ -3,6 +3,7 @@ import { RwSections } from '../RwSections';
 import { RwParseStructureNotFoundError } from '../errors/RwParseError';
 import RwVersion from '../utils/RwVersion';
 import { DffModelType } from './DffModelType';
+import { RwColor, RwMatrix3, RwMatrix4, RwSphere, RwTextureCoordinate, RwTriangle, RwVector3 } from '../common/types';
 
 export interface RwDff {
     modelType: DffModelType,
@@ -79,7 +80,7 @@ export interface RwGeometry {
     boundingSphere?: RwSphere,
     materialList: RwMaterialList,
     binMesh: RwBinMesh,
-    skin?: RwSkin, 
+    skin?: RwSkin,
 }
 
 export interface RwGeometryList {
@@ -111,58 +112,6 @@ export interface RwMesh {
     materialIndex: number,
     indexCount: number,
     indices: number[],
-}
-
-export interface RwMatrix3 {
-    right: RwVector3,
-    up: RwVector3,
-    at: RwVector3,
-}
-
-export interface RwMatrix4 {
-    right: RwVector4,
-    up: RwVector4,
-    at: RwVector4,
-    transform: RwVector4,
-}
-
-export interface RwColor {
-    r: number,
-    g: number,
-    b: number,
-    a: number,
-}
-
-export interface RwVector2 {
-    x: number,
-    y: number,
-}
-
-export interface RwVector3 {
-    x: number,
-    y: number,
-    z: number,
-}
-export interface RwVector4 {
-    x: number,
-    y: number,
-    z: number,
-    t: number,
-}
-
-export interface RwTextureCoordinate {
-    u: number,
-    v: number,
-}
-
-export interface RwTriangle {
-    vector: RwVector3,
-    materialId: number,
-}
-
-export interface RwSphere {
-    vector: RwVector3,
-    radius: number,
 }
 
 export class DffParser extends RwFile {
