@@ -17,10 +17,10 @@ This is a fork of the original [rw-parser](https://github.com/Timic3/rw-parser) 
 
 ## Installation
 
-Install `rw-parser-ng` using npm:
+Install `rw-parser-ng` using pnpm:
 
 ```bash
-npm install --save rw-parser-ng
+pnpm install --save rw-parser-ng
 ```
 
 ## Usage
@@ -73,11 +73,11 @@ parseDffFromUrl('path/to/your/model.dff');
 ## Development
 
 1.  Clone the repository: `git clone https://github.com/DepsCian/rw-parser-ng.git`
-2.  Install dependencies: `npm install`
-3.  Build the project: `npm run build`
-4.  Run tests: `npm test`
+2.  Install dependencies: `pnpm install`
+3.  Build the project: `pnpm run build`
+4.  Run tests: `pnpm test`
 
-To watch for changes during development, use `npm run dev`.
+To watch for changes during development, use `pnpm run dev`.
 
 ## Contributing
 
