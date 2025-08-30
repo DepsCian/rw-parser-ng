@@ -8,3 +8,5 @@ export * from './renderware/ifp/IfpParser';
 
 export * from './renderware/dff/DffModelType';
 export * from './renderware/ifp/IfpData';
+
+export * from './renderware/common/types';
