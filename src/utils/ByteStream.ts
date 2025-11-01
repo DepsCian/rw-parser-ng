@@ -72,4 +72,9 @@ export class ByteStream {
     public skip(size: number) {
         this._cursor += size;
     }
+
+    public dispose() {
+        this._stream = Buffer.alloc(0);
+        this._cursor = 0;
+    }
 }
