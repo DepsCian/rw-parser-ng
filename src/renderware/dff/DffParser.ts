@@ -130,7 +130,13 @@ export class DffParser extends RwFile {
         let frameList: RwFrameList | null = null;
 
         while (this.getPosition() < this.getSize()) {
-            const header = this.readSectionHeader();
+            let header;
+            try {
+                header = this.readSectionHeader();
+            } catch (error) {
+                console.warn(`Failed to read section header at offset ${this.getPosition().toString(16)}: ${error instanceof Error ? error.message : error}. Truncating file.`);
+                break;
+            }
 
             if (header.sectionType === 0) {
                 break;
@@ -138,6 +144,11 @@ export class DffParser extends RwFile {
 
             if (header.sectionSize == 0) {
                 continue;
+            }
+
+            if (this.getPosition() + header.sectionSize > this.getSize()) {
+                console.warn(`Section at offset ${this.getPosition().toString(16)} claims size ${header.sectionSize} but only ${this.getSize() - this.getPosition()} bytes remaining. Truncating file.`);
+                break;
             }
 
             switch (header.sectionType) {
@@ -190,8 +201,12 @@ export class DffParser extends RwFile {
             throw new RwParseStructureNotFoundError('version');
         }
 
+        if (!geometryList || !geometryList.geometries || geometryList.geometries.length === 0) {
+            throw new RwParseStructureNotFoundError('geometry list');
+        }
+
         let modelType = DffModelType.GENERIC;
-        if (geometryList?.geometries.some(g => g.skin)) {
+        if (geometryList.geometries.some(g => g.skin)) {
             modelType = DffModelType.SKIN;
         } else if (dummies.some(d => d.toLowerCase().includes('wheel') || d.toLowerCase().includes('chassis'))) {
             modelType = DffModelType.VEHICLE;
