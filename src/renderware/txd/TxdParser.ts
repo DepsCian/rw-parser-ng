@@ -106,6 +106,7 @@ export class TxdParser extends RwFile {
         const paletteType = (rasterFormat >> 13) & 0b11;
 
         let mipWidth = width;
+        const pixelFormat = rasterFormat & 0x0F00;
         let mipHeight = height;
 
         let mipmaps: number[][] = [];
@@ -129,7 +130,7 @@ export class TxdParser extends RwFile {
                         RasterFormat.RASTER_555
                     ];
 
-                    const hasAlpha = ((platformId === PlatformType.D3D9 && alpha) || (platformId == PlatformType.D3D8 && !rasterFormatsWithoutAlpha.includes(rasterFormat)));
+                    const hasAlpha = ((platformId === PlatformType.D3D9 && alpha) || (platformId == PlatformType.D3D8 && !rasterFormatsWithoutAlpha.includes(pixelFormat)));
 
                     bitmap = Array.from(this.getBitmapWithPalette(paletteType, depth, hasAlpha, raster, palette, width, height));
                 }
@@ -140,7 +141,7 @@ export class TxdParser extends RwFile {
                     bitmap = Array.from(this.getBitmapWithDXT(d3dFormat, raster, width, height));
                 }
                 else {
-                    bitmap = Array.from(this.getBitmapWithRasterFormat(rasterFormat, raster, width, height))
+                    bitmap = Array.from(this.getBitmapWithRasterFormat(pixelFormat, raster, width, height))
                 }
 
                 mipmaps.push(bitmap);
