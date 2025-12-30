@@ -1,6 +1,6 @@
 {
   "name": "rw-parser-ng",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "Parses RenderWare DFF, TXD and IFP files into usable format!",
   "author": {
     "name": "DepsCian",
@@ -35,7 +35,8 @@
     "rw-parser",
     "dff",
     "txd",
-    "ifp"
+    "ifp",
+    "fxp"
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
