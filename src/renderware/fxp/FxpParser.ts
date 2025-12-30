@@ -44,39 +44,6 @@ const INFO_TYPE_MAP: Record<string, string> = {
   "FX_INFO_SMOKE_DATA:": "smoke",
 };
 
-const INFO_INTERP_COUNTS: Record<string, number> = {
-  emrate: 1,
-  emsize: 7,
-  emspeed: 2,
-  emdir: 3,
-  emangle: 2,
-  emlife: 2,
-  empos: 3,
-  emweather: 1,
-  emrotation: 2,
-  noise: 3,
-  force: 3,
-  friction: 1,
-  attractpt: 4,
-  attractline: 7,
-  groundcollide: 2,
-  wind: 1,
-  jitter: 3,
-  rotspeed: 4,
-  float: 1,
-  colour: 4,
-  size: 4,
-  spriterect: 4,
-  heathaze: 4,
-  trail: 3,
-  flat: 9,
-  dir: 2,
-  animtex: 2,
-  colourrange: 8,
-  colourbright: 5,
-  smoke: 2,
-};
-
 class FxpParserImpl {
   private _lines: string[] = [];
   private _pos = 0;
@@ -221,16 +188,12 @@ class FxpParserImpl {
         continue;
       }
 
-      let timeModeParticle = true;
-      const typeCode = this._getInfoTypeCode(infoType);
-      if ((typeCode & 0xf000) > 0x1000 && version >= 107) {
-        this._skipEmpty();
-        if (this._currentLine()?.startsWith("TIMEMODEPRT:")) {
-          timeModeParticle = this._readField("TIMEMODEPRT:") === "1";
-        }
+      this._skipEmpty();
+      if (this._currentLine()?.startsWith("TIMEMODEPRT:")) {
+        this._pos++;
       }
 
-      const info = this._parseInfo(typeKey, version);
+      const info = this._parseInfo(typeKey);
       if (info) {
         infos.push(info);
       }
@@ -260,214 +223,252 @@ class FxpParserImpl {
     };
   }
 
-  private _getInfoTypeCode(infoType: string): number {
-    const codes: Record<string, number> = {
-      "FX_INFO_EMRATE_DATA:": 0x1001,
-      "FX_INFO_EMSIZE_DATA:": 0x1004,
-      "FX_INFO_EMSPEED_DATA:": 0x1008,
-      "FX_INFO_EMDIR_DATA:": 0x1010,
-      "FX_INFO_EMANGLE_DATA:": 0x1020,
-      "FX_INFO_EMLIFE_DATA:": 0x1040,
-      "FX_INFO_EMPOS_DATA:": 0x1080,
-      "FX_INFO_EMWEATHER_DATA:": 0x1100,
-      "FX_INFO_EMROTATION_DATA:": 0x1200,
-      "FX_INFO_NOISE_DATA:": 0x2001,
-      "FX_INFO_FORCE_DATA:": 0x2002,
-      "FX_INFO_FRICTION_DATA:": 0x2004,
-      "FX_INFO_ATTRACTPT_DATA:": 0x2008,
-      "FX_INFO_ATTRACTLINE_DATA:": 0x2010,
-      "FX_INFO_GROUNDCOLLIDE_DATA:": 0x2020,
-      "FX_INFO_WIND_DATA:": 0x2040,
-      "FX_INFO_JITTER_DATA:": 0x2080,
-      "FX_INFO_ROTSPEED_DATA:": 0x2100,
-      "FX_INFO_FLOAT_DATA:": 0x2200,
-      "FX_INFO_UNDERWATER_DATA:": 0x2400,
-      "FX_INFO_COLOUR_DATA:": 0x4001,
-      "FX_INFO_SIZE_DATA:": 0x4002,
-      "FX_INFO_SPRITERECT_DATA:": 0x4004,
-      "FX_INFO_HEATHAZE_DATA:": 0x4008,
-      "FX_INFO_TRAIL_DATA:": 0x4010,
-      "FX_INFO_FLAT_DATA:": 0x4020,
-      "FX_INFO_DIR_DATA:": 0x4040,
-      "FX_INFO_ANIMTEX_DATA:": 0x4080,
-      "FX_INFO_COLOURRANGE_DATA:": 0x4100,
-      "FX_INFO_SELFLIT_DATA:": 0x4200,
-      "FX_INFO_COLOURBRIGHT_DATA:": 0x4400,
-      "FX_INFO_SMOKE_DATA:": 0x8001,
-    };
-    return codes[infoType] ?? 0;
-  }
-
-  private _parseInfo(typeKey: string, version: number): FxInfo | null {
+  private _parseInfo(typeKey: string): FxInfo | null {
     if (typeKey === "underwater" || typeKey === "selflit") {
       return { type: typeKey } as FxInfo;
     }
 
-    const count = INFO_INTERP_COUNTS[typeKey];
-    if (count === undefined) {
-      return null;
-    }
-
-    const interps = this._parseInterps(count);
+    const interps = this._parseAllInterps();
 
     switch (typeKey) {
       case "emrate":
-        return { type: "emrate", rate: interps[0] };
+        return {
+          type: "emrate",
+          rate: interps["RATE"] ?? this._defaultInterp(),
+        };
       case "emsize":
         return {
           type: "emsize",
-          radius: interps[0],
-          sizeMinX: interps[1],
-          sizeMaxX: interps[2],
-          sizeMinY: interps[3],
-          sizeMaxY: interps[4],
-          sizeMinZ: interps[5],
-          sizeMaxZ: interps[6],
+          radius: interps["RADIUS"] ?? this._defaultInterp(),
+          sizeMinX: interps["SIZEMINX"] ?? this._defaultInterp(),
+          sizeMaxX: interps["SIZEMAXX"] ?? this._defaultInterp(),
+          sizeMinY: interps["SIZEMINY"] ?? this._defaultInterp(),
+          sizeMaxY: interps["SIZEMAXY"] ?? this._defaultInterp(),
+          sizeMinZ: interps["SIZEMINZ"] ?? this._defaultInterp(),
+          sizeMaxZ: interps["SIZEMAXZ"] ?? this._defaultInterp(),
         };
       case "emspeed":
-        return { type: "emspeed", speed: interps[0], bias: interps[1] };
+        return {
+          type: "emspeed",
+          speed: interps["SPEED"] ?? this._defaultInterp(),
+          bias: interps["BIAS"] ?? this._defaultInterp(),
+        };
       case "emdir":
         return {
           type: "emdir",
-          dirX: interps[0],
-          dirY: interps[1],
-          dirZ: interps[2],
+          dirX: interps["DIRX"] ?? this._defaultInterp(),
+          dirY: interps["DIRY"] ?? this._defaultInterp(),
+          dirZ: interps["DIRZ"] ?? this._defaultInterp(),
         };
       case "emangle":
-        return { type: "emangle", min: interps[0], max: interps[1] };
+        return {
+          type: "emangle",
+          min: interps["MIN"] ?? interps["ANGLEMIN"] ?? this._defaultInterp(),
+          max: interps["MAX"] ?? interps["ANGLEMAX"] ?? this._defaultInterp(),
+        };
       case "emlife":
-        return { type: "emlife", life: interps[0], bias: interps[1] };
+        return {
+          type: "emlife",
+          life: interps["LIFE"] ?? this._defaultInterp(),
+          bias: interps["BIAS"] ?? this._defaultInterp(),
+        };
       case "empos":
-        return { type: "empos", x: interps[0], y: interps[1], z: interps[2] };
+        return {
+          type: "empos",
+          x: interps["X"] ?? this._defaultInterp(),
+          y: interps["Y"] ?? this._defaultInterp(),
+          z: interps["Z"] ?? this._defaultInterp(),
+        };
       case "emweather":
-        return { type: "emweather", interp: interps[0] };
+        return {
+          type: "emweather",
+          interp: interps["WEATHER"] ?? this._defaultInterp(),
+        };
       case "emrotation":
-        return { type: "emrotation", min: interps[0], max: interps[1] };
+        return {
+          type: "emrotation",
+          min: interps["ANGLEMIN"] ?? this._defaultInterp(),
+          max: interps["ANGLEMAX"] ?? this._defaultInterp(),
+        };
       case "noise":
-        return { type: "noise", x: interps[0], y: interps[1], z: interps[2] };
+        return {
+          type: "noise",
+          x: interps["NOISE"] ?? interps["X"] ?? this._defaultInterp(),
+          y: interps["Y"] ?? this._defaultInterp(),
+          z: interps["Z"] ?? this._defaultInterp(),
+        };
       case "force":
         return {
           type: "force",
-          forceX: interps[0],
-          forceY: interps[1],
-          forceZ: interps[2],
+          forceX: interps["FORCEX"] ?? this._defaultInterp(),
+          forceY: interps["FORCEY"] ?? this._defaultInterp(),
+          forceZ: interps["FORCEZ"] ?? this._defaultInterp(),
         };
       case "friction":
-        return { type: "friction", friction: interps[0] };
+        return {
+          type: "friction",
+          friction: interps["FRICTION"] ?? this._defaultInterp(),
+        };
       case "attractpt":
         return {
           type: "attractpt",
-          x: interps[0],
-          y: interps[1],
-          z: interps[2],
-          power: interps[3],
+          x: interps["X"] ?? this._defaultInterp(),
+          y: interps["Y"] ?? this._defaultInterp(),
+          z: interps["Z"] ?? this._defaultInterp(),
+          power: interps["POWER"] ?? this._defaultInterp(),
         };
       case "attractline":
         return {
           type: "attractline",
-          x1: interps[0],
-          y1: interps[1],
-          z1: interps[2],
-          x2: interps[3],
-          y2: interps[4],
-          z2: interps[5],
-          power: interps[6],
+          x1: interps["X1"] ?? this._defaultInterp(),
+          y1: interps["Y1"] ?? this._defaultInterp(),
+          z1: interps["Z1"] ?? this._defaultInterp(),
+          x2: interps["X2"] ?? this._defaultInterp(),
+          y2: interps["Y2"] ?? this._defaultInterp(),
+          z2: interps["Z2"] ?? this._defaultInterp(),
+          power: interps["POWER"] ?? this._defaultInterp(),
         };
       case "groundcollide":
         return {
           type: "groundcollide",
-          damping: interps[0],
-          bounce: interps[1],
+          damping: interps["DAMPING"] ?? this._defaultInterp(),
+          bounce: interps["BOUNCE"] ?? this._defaultInterp(),
         };
       case "wind":
-        return { type: "wind", interp: interps[0] };
+        return {
+          type: "wind",
+          interp: interps["WINDFACTOR"] ?? this._defaultInterp(),
+        };
       case "jitter":
-        return { type: "jitter", x: interps[0], y: interps[1], z: interps[2] };
+        return {
+          type: "jitter",
+          x: interps["X"] ?? this._defaultInterp(),
+          y: interps["Y"] ?? this._defaultInterp(),
+          z: interps["Z"] ?? this._defaultInterp(),
+        };
       case "rotspeed":
         return {
           type: "rotspeed",
-          speed: interps[0],
-          speedBias: interps[1],
-          accel: interps[2],
-          accelBias: interps[3],
+          speed: interps["SPEED"] ?? this._defaultInterp(),
+          speedBias: interps["SPEEDBIAS"] ?? this._defaultInterp(),
+          accel: interps["ACCEL"] ?? this._defaultInterp(),
+          accelBias: interps["ACCELBIAS"] ?? this._defaultInterp(),
         };
       case "float":
-        return { type: "float", interp: interps[0] };
+        return {
+          type: "float",
+          interp: interps["FLOAT"] ?? this._defaultInterp(),
+        };
       case "colour":
         return {
           type: "colour",
-          red: interps[0],
-          green: interps[1],
-          blue: interps[2],
-          alpha: interps[3],
+          red: interps["RED"] ?? this._defaultInterp(),
+          green: interps["GREEN"] ?? this._defaultInterp(),
+          blue: interps["BLUE"] ?? this._defaultInterp(),
+          alpha: interps["ALPHA"] ?? this._defaultInterp(),
         };
       case "size":
         return {
           type: "size",
-          sizeX: interps[0],
-          sizeY: interps[1],
-          sizeXBias: interps[2],
-          sizeYBias: interps[3],
+          sizeX: interps["SIZEX"] ?? this._defaultInterp(),
+          sizeY: interps["SIZEY"] ?? this._defaultInterp(),
+          sizeXBias: interps["SIZEXBIAS"] ?? this._defaultInterp(),
+          sizeYBias: interps["SIZEYBIAS"] ?? this._defaultInterp(),
         };
       case "spriterect":
-        return { type: "spriterect", interps };
+        return { type: "spriterect", interps: Object.values(interps) };
       case "heathaze":
-        return { type: "heathaze", interps };
+        return { type: "heathaze", interps: Object.values(interps) };
       case "trail":
-        return { type: "trail", interps };
+        return { type: "trail", interps: Object.values(interps) };
       case "flat":
         return {
           type: "flat",
-          rightX: interps[0],
-          rightY: interps[1],
-          rightZ: interps[2],
-          upX: interps[3],
-          upY: interps[4],
-          upZ: interps[5],
-          atX: interps[6],
-          atY: interps[7],
-          atZ: interps[8],
+          rightX: interps["RIGHTX"] ?? this._defaultInterp(),
+          rightY: interps["RIGHTY"] ?? this._defaultInterp(),
+          rightZ: interps["RIGHTZ"] ?? this._defaultInterp(),
+          upX: interps["UPX"] ?? this._defaultInterp(),
+          upY: interps["UPY"] ?? this._defaultInterp(),
+          upZ: interps["UPZ"] ?? this._defaultInterp(),
+          atX: interps["ATX"] ?? this._defaultInterp(),
+          atY: interps["ATY"] ?? this._defaultInterp(),
+          atZ: interps["ATZ"] ?? this._defaultInterp(),
         };
       case "dir":
-        return { type: "dir", interps };
+        return { type: "dir", interps: Object.values(interps) };
       case "animtex":
-        return { type: "animtex", interps };
+        return { type: "animtex", interps: Object.values(interps) };
       case "colourrange":
         return {
           type: "colourrange",
-          redMin: interps[0],
-          redMax: interps[1],
-          greenMin: interps[2],
-          greenMax: interps[3],
-          blueMin: interps[4],
-          blueMax: interps[5],
-          alphaMin: interps[6],
-          alphaMax: interps[7],
+          redMin: interps["REDMIN"] ?? this._defaultInterp(),
+          redMax: interps["REDMAX"] ?? this._defaultInterp(),
+          greenMin: interps["GREENMIN"] ?? this._defaultInterp(),
+          greenMax: interps["GREENMAX"] ?? this._defaultInterp(),
+          blueMin: interps["BLUEMIN"] ?? this._defaultInterp(),
+          blueMax: interps["BLUEMAX"] ?? this._defaultInterp(),
+          alphaMin: interps["ALPHAMIN"] ?? this._defaultInterp(),
+          alphaMax: interps["ALPHAMAX"] ?? this._defaultInterp(),
         };
       case "colourbright":
         return {
           type: "colourbright",
-          red: interps[0],
-          green: interps[1],
-          blue: interps[2],
-          alpha: interps[3],
-          brightness: interps[4],
+          red: interps["RED"] ?? this._defaultInterp(),
+          green: interps["GREEN"] ?? this._defaultInterp(),
+          blue: interps["BLUE"] ?? this._defaultInterp(),
+          alpha: interps["ALPHA"] ?? this._defaultInterp(),
+          brightness:
+            interps["BRIGHTNESS"] ?? interps["BIAS"] ?? this._defaultInterp(),
         };
       case "smoke":
-        return { type: "smoke", interps };
+        return { type: "smoke", interps: Object.values(interps) };
       default:
         return null;
     }
   }
 
-  private _parseInterps(count: number): FxInterpData[] {
-    const result: FxInterpData[] = [];
-    for (let i = 0; i < count; i++) {
+  private _defaultInterp(): FxInterpData {
+    return { looped: false, keys: [] };
+  }
+
+  private _parseAllInterps(): Record<string, FxInterpData> {
+    const result: Record<string, FxInterpData> = {};
+
+    while (this._pos < this._lines.length) {
       this._skipEmpty();
-      this._pos++;
-      result.push(this._parseInterpolation());
+      const line = this._currentLine();
+
+      if (this._isBlockEnd(line)) {
+        break;
+      }
+
+      if (line.endsWith(":") && !line.startsWith("FX_")) {
+        const fieldName = line.slice(0, -1).toUpperCase();
+        this._pos++;
+
+        this._skipEmpty();
+        if (this._currentLine() === "FX_INTERP_DATA:") {
+          result[fieldName] = this._parseInterpolation();
+        }
+      } else {
+        this._pos++;
+      }
     }
+
     return result;
+  }
+
+  private _isBlockEnd(line: string): boolean {
+    return (
+      !line ||
+      line.startsWith("FX_INFO_") ||
+      line.startsWith("LODSTART:") ||
+      line.startsWith("LODEND:") ||
+      line.startsWith("FX_PRIM_") ||
+      line.startsWith("FX_SYSTEM_DATA:") ||
+      line.startsWith("OMITTEXTURES:") ||
+      line.startsWith("TXDNAME:")
+    );
   }
 
   private _parseInterpolation(): FxInterpData {
@@ -512,37 +513,10 @@ class FxpParserImpl {
   private _skipUnknownInfo(): void {
     while (this._pos < this._lines.length) {
       const line = this._currentLine();
-      if (
-        !line ||
-        line.startsWith("FX_INFO_") ||
-        line.startsWith("LODSTART:") ||
-        line.startsWith("FX_PRIM_") ||
-        line.startsWith("FX_SYSTEM_DATA:")
-      ) {
+      if (this._isBlockEnd(line)) {
         break;
       }
-      if (line === "FX_INTERP_DATA:") {
-        this._pos++;
-        this._skipEmpty();
-        if (this._currentLine()?.startsWith("LOOPED:")) this._pos++;
-        this._skipEmpty();
-        const numKeysLine = this._currentLine();
-        let numKeys = 0;
-        if (numKeysLine?.startsWith("NUM_KEYS:")) {
-          numKeys = parseInt(numKeysLine.slice(9).trim(), 10);
-          this._pos++;
-        }
-        for (let i = 0; i < numKeys; i++) {
-          this._skipEmpty();
-          if (this._currentLine() === "FX_KEYFLOAT_DATA:") this._pos++;
-          this._skipEmpty();
-          if (this._currentLine()?.startsWith("TIME:")) this._pos++;
-          this._skipEmpty();
-          if (this._currentLine()?.startsWith("VAL:")) this._pos++;
-        }
-      } else {
-        this._pos++;
-      }
+      this._pos++;
     }
   }
 
