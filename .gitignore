@@ -1,7 +1,11 @@
-lib
-build
-node_modules
-output
+node_modules/
+lib/
+build/
+output/
+coverage/
+scripts/
 
-coverage
-scripts
+*.log
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
