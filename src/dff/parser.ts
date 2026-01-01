@@ -88,11 +88,42 @@ export class DffParser extends RwFile {
       throw new RwParseStructureNotFoundError("geometry list");
     }
 
+    // Heuristic model type detection (not authoritative - GTA uses IDE/DAT files)
+    // Based on gta-reversed: eCarNodes.h, AtomicModelInfo.cpp, VehicleModelInfo.cpp
+    const vehiclePrefixes = [
+      "chassis",
+      "wheel_rf",
+      "wheel_lf",
+      "wheel_rb",
+      "wheel_lb",
+      "wheel_rm",
+      "wheel_lm",
+      "door_lf",
+      "door_rf",
+      "door_lr",
+      "door_rr",
+      "bonnet",
+      "boot",
+      "bump_front",
+      "bump_rear",
+      "wing_lf",
+      "wing_rf",
+      "windscreen",
+      "exhaust",
+      "boat_hi",
+      "toprotor",
+      "rearrotor",
+      "moving_rotor",
+    ];
+
     let modelType = DffModelType.GENERIC;
     if (geometryList.geometries.some((g) => g.skin)) {
       modelType = DffModelType.SKIN;
     } else if (
-      dummies.some((d) => d.toLowerCase().includes("wheel") || d.toLowerCase().includes("chassis"))
+      dummies.some((d) => {
+        const lower = d.toLowerCase();
+        return vehiclePrefixes.some((p) => lower.startsWith(p) || lower.includes(`_${p}`));
+      })
     ) {
       modelType = DffModelType.VEHICLE;
     }
