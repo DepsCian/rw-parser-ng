@@ -1,2 +1,2 @@
-export * from "./FxpData";
-export * from "./FxpParser";
+export * from "./types";
+export * from "./fxp-parser";

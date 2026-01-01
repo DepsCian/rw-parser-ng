@@ -1,12 +1,4 @@
-export interface FxKeyframe {
-  time: number;
-  value: number;
-}
-
-export interface FxInterpData {
-  looped: boolean;
-  keys: FxKeyframe[];
-}
+import { FxInterpData } from "./common";
 
 export interface FxInfoEmRate {
   type: "emrate";
@@ -257,45 +249,3 @@ export type FxInfo =
   | FxInfoSelfLit
   | FxInfoColourBright
   | FxInfoSmoke;
-
-export interface FxMatrix {
-  right: { x: number; y: number; z: number };
-  up: { x: number; y: number; z: number };
-  at: { x: number; y: number; z: number };
-  pos: { x: number; y: number; z: number };
-}
-
-export interface FxEmitterBP {
-  name: string;
-  matrix: FxMatrix;
-  textures: (string | null)[];
-  alphaOn: boolean;
-  srcBlendId: number;
-  dstBlendId: number;
-  lodStart: number;
-  lodEnd: number;
-  infos: FxInfo[];
-}
-
-export interface FxBoundingSphere {
-  x: number;
-  y: number;
-  z: number;
-  radius: number;
-}
-
-export interface FxSystemBP {
-  filename: string;
-  name: string;
-  length: number;
-  loopIntervalMin: number;
-  loopLength: number;
-  playMode: number;
-  cullDist: number;
-  boundingSphere: FxBoundingSphere | null;
-  prims: FxEmitterBP[];
-}
-
-export interface FxProject {
-  systems: Map<string, FxSystemBP>;
-}
