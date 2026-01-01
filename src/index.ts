@@ -6,7 +6,8 @@ export * from "./renderware/dff/dff-parser";
 export * from "./renderware/dff/dff-model-type";
 export * from "./renderware/dff/types";
 
-export * from "./renderware/txd/TxdParser";
+export * from "./renderware/txd/txd-parser";
+export * from "./renderware/txd/types";
 export * from "./renderware/ifp/IfpParser";
 export * from "./renderware/fxp";
 
