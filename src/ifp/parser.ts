@@ -1,7 +1,7 @@
-import { RwFile } from "../rw-file";
+import { RwFile } from "../core/rw-file";
 import { RwIfp } from "./types";
-import { readAnp3 } from "./anp3-reader";
-import { readAnpk } from "./anpk-reader";
+import { readAnp3 } from "./readers/anp3";
+import { readAnpk } from "./readers/anpk";
 
 export class IfpParser extends RwFile {
   constructor(buffer: Buffer) {

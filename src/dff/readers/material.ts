@@ -1,4 +1,4 @@
-import { RwFile } from "../../rw-file";
+import { RwFile } from "../../core/rw-file";
 import { RwMaterial, RwMaterialList, RwTexture } from "../types";
 
 export function readTexture(file: RwFile): RwTexture {

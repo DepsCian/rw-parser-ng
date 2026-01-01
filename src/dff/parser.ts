@@ -1,7 +1,7 @@
-import { RwFile } from "../rw-file";
-import { RwSections } from "../rw-sections";
-import { RwParseStructureNotFoundError } from "../errors/rw-parse-error";
-import { getVersionString, unpackVersion } from "../utils/rw-version";
+import { RwFile } from "../core/rw-file";
+import { RwSections } from "../core/rw-sections";
+import { RwParseStructureNotFoundError } from "../core/errors";
+import { getVersionString, unpackVersion } from "../core/rw-version";
 import { DffModelType } from "./dff-model-type";
 import { RwAnimNode, RwDff, RwFrameList, RwGeometryList } from "./types";
 import {

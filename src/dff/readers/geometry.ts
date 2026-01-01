@@ -1,10 +1,10 @@
 import { RwTextureCoordinate } from "../../common/types";
-import { RwFile, RwSectionHeader } from "../../rw-file";
-import { RwSections } from "../../rw-sections";
-import { unpackVersion } from "../../utils/rw-version";
+import { RwFile, RwSectionHeader } from "../../core/rw-file";
+import { RwSections } from "../../core/rw-sections";
+import { unpackVersion } from "../../core/rw-version";
 import { RwGeometry, RwGeometryList } from "../types";
-import { readMaterialList } from "./material-reader";
-import { readBinMesh, readSkin } from "./mesh-reader";
+import { readMaterialList } from "./material";
+import { readBinMesh, readSkin } from "./mesh";
 
 export function readGeometryList(
   file: RwFile,

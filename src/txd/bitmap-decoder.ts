@@ -1,4 +1,4 @@
-import { bc1, bc2, bc3 } from "../utils/bc-decoder";
+import { bc1, bc2, bc3 } from "../codecs/dxt";
 import {
   bgra1555,
   bgra4444,
@@ -6,7 +6,7 @@ import {
   bgra565,
   bgra888,
   bgra8888,
-} from "../utils/bgra-decoder";
+} from "../codecs/bitmap";
 import {
   lum8,
   lum8a8,
@@ -14,12 +14,8 @@ import {
   pal4NoAlpha,
   pal8,
   pal8NoAlpha,
-} from "../utils/palette-decoder";
-import {
-  D3DFormat,
-  PaletteType,
-  RasterFormat,
-} from "../utils/image-format-enums";
+} from "../codecs/palette";
+import { D3DFormat, PaletteType, RasterFormat } from "../codecs/formats";
 
 export function decodePaletteBitmap(
   paletteType: number,

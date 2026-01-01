@@ -1,6 +1,5 @@
 import { readFileSync } from "fs";
-import { IfpParser } from "../../src";
-import { IfpVersion } from "../../src/renderware/ifp/types";
+import { IfpParser, IfpVersion } from "../../src";
 
 describe("IFP Parser - ped.ifp", () => {
   const buffer = readFileSync("./tests/assets/ped.ifp");

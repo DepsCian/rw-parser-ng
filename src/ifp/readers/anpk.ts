@@ -1,11 +1,11 @@
-import { RwFile } from "../rw-file";
+import { RwFile } from "../../core/rw-file";
 import {
   IfpVersion,
   RwIfp,
   RwIfpAnimation,
   RwIfpBone,
   RwIfpKeyframe,
-} from "./types";
+} from "../types";
 
 export function readAnpk(file: RwFile): RwIfp {
   file.skip(4); // ANPK signature

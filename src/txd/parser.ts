@@ -1,9 +1,5 @@
-import { RwFile } from "../rw-file";
-import {
-  PaletteType,
-  PlatformType,
-  RasterFormat,
-} from "../utils/image-format-enums";
+import { RwFile } from "../core/rw-file";
+import { PaletteType, PlatformType, RasterFormat } from "../codecs/formats";
 import {
   decodeDxtBitmap,
   decodePaletteBitmap,

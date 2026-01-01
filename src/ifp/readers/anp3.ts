@@ -1,11 +1,11 @@
-import { RwFile } from "../rw-file";
+import { RwFile } from "../../core/rw-file";
 import {
   IfpVersion,
   RwIfp,
   RwIfpAnimation,
   RwIfpBone,
   RwIfpKeyframe,
-} from "./types";
+} from "../types";
 
 const QUAT_SCALE = 4096.0;
 const POS_SCALE = 1024.0;
