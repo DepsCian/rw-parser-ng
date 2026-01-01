@@ -114,6 +114,7 @@ export function readGeometry(file: RwFile, versionNumber: number): RwGeometry {
   let binMesh;
   let skin;
   let effects2d: Rw2dEffect[] | undefined;
+  let extraVertColour;
   let relativePosition = 0;
 
   while (relativePosition < extensionSize) {
@@ -130,6 +131,17 @@ export function readGeometry(file: RwFile, versionNumber: number): RwGeometry {
         break;
       case RwSections.Rw2dEffect:
         effects2d = read2dEffects(file, extHeader.sectionSize);
+        break;
+      case RwSections.RwExtraVertColour:
+        extraVertColour = [];
+        for (let i = 0; i < vertexCount; i++) {
+          extraVertColour.push({
+            r: file.readUint8(),
+            g: file.readUint8(),
+            b: file.readUint8(),
+            a: file.readUint8(),
+          });
+        }
         break;
       default:
         file.skip(extHeader.sectionSize);
@@ -154,5 +166,6 @@ export function readGeometry(file: RwFile, versionNumber: number): RwGeometry {
     binMesh,
     skin,
     effects2d,
+    extraVertColour,
   };
 }

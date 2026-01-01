@@ -87,6 +87,7 @@ export interface RwGeometry {
   binMesh?: RwBinMesh;
   skin?: RwSkin;
   effects2d?: Rw2dEffect[];
+  extraVertColour?: RwColor[];
 }
 
 export interface RwGeometryList {
