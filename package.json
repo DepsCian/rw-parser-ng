@@ -49,6 +49,7 @@
     }
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.3.10",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.3",
     "jest": "^30.0.0",
@@ -58,9 +59,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsc -p tsconfig.json --watch",
+    "lint": "biome check .",
+    "format": "biome format --write .",
     "prepare": "npm run build",
-    "test": "jest",
-    "sort:models": "tsc && node lib/scripts/sort_models.js"
+    "test": "bun test"
   },
   "files": [
     "lib",
