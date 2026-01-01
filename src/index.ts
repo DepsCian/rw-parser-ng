@@ -8,8 +8,8 @@ export * from "./renderware/dff/types";
 
 export * from "./renderware/txd/txd-parser";
 export * from "./renderware/txd/types";
-export * from "./renderware/ifp/IfpParser";
+export * from "./renderware/ifp/ifp-parser";
+export * from "./renderware/ifp/types";
 export * from "./renderware/fxp";
 
-export * from "./renderware/ifp/IfpData";
 export * from "./renderware/common/types";
