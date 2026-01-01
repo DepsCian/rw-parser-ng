@@ -2,11 +2,15 @@ import type { RwTextureCoordinate } from "../../common/types";
 import type { RwFile, RwSectionHeader } from "../../core/rw-file";
 import { RwSections } from "../../core/rw-sections";
 import { unpackVersion } from "../../core/rw-version";
-import type { RwGeometry, RwGeometryList } from "../types";
+import type { Rw2dEffect, RwGeometry, RwGeometryList } from "../types";
+import { read2dEffects } from "./2d-effect";
 import { readMaterialList } from "./material";
 import { readBinMesh, readSkin } from "./mesh";
 
-export function readGeometryList(file: RwFile, header: RwSectionHeader): RwGeometryList {
+export function readGeometryList(
+  file: RwFile,
+  header: RwSectionHeader,
+): RwGeometryList {
   file.readSectionHeader();
   const geometricObjectCount = file.readUint32();
   const geometries: RwGeometry[] = [];
@@ -109,6 +113,7 @@ export function readGeometry(file: RwFile, versionNumber: number): RwGeometry {
   const extensionSize = file.readSectionHeader().sectionSize;
   let binMesh;
   let skin;
+  let effects2d: Rw2dEffect[] | undefined;
   let relativePosition = 0;
 
   while (relativePosition < extensionSize) {
@@ -122,6 +127,9 @@ export function readGeometry(file: RwFile, versionNumber: number): RwGeometry {
         break;
       case RwSections.RwSkin:
         skin = readSkin(file, vertexCount);
+        break;
+      case RwSections.Rw2dEffect:
+        effects2d = read2dEffects(file, extHeader.sectionSize);
         break;
       default:
         file.skip(extHeader.sectionSize);
@@ -145,5 +153,6 @@ export function readGeometry(file: RwFile, versionNumber: number): RwGeometry {
     materialList,
     binMesh,
     skin,
+    effects2d,
   };
 }

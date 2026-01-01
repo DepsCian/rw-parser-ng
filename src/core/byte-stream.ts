@@ -28,6 +28,10 @@ export class ByteStream {
     return val;
   }
 
+  public readInt8(): number {
+    return this._stream.readInt8(this._cursor++);
+  }
+
   public readInt32(): number {
     const val = this._stream.readInt32LE(this._cursor);
     this._cursor += 4;
@@ -41,15 +45,23 @@ export class ByteStream {
   }
 
   public readString(size: number): string {
-    const str = this._stream.toString("ascii", this._cursor, this._cursor + size);
+    const str = this._stream.toString(
+      "ascii",
+      this._cursor,
+      this._cursor + size,
+    );
     this._cursor += size;
     return str.split(/\0/g).shift() || "";
   }
 
+  public readBytes(size: number): Uint8Array {
+    const data = this._stream.subarray(this._cursor, this._cursor + size);
+    this._cursor += size;
+    return new Uint8Array(data);
+  }
+
   public read(size: number): Uint8Array {
-    const data = new Uint8Array(size);
-    for (let i = 0; i < size; i++) data[i] = this.readUint8();
-    return data;
+    return this.readBytes(size);
   }
 
   public getSize(): number {
