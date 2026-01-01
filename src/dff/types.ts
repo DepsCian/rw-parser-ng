@@ -88,6 +88,23 @@ export interface RwGeometry {
   skin?: RwSkin;
   effects2d?: Rw2dEffect[];
   extraVertColour?: RwColor[];
+  breakable?: RwBreakable;
+}
+
+export interface RwBreakable {
+  positionRule: number;
+  vertices: RwVector3[];
+  texCoords: RwTextureCoordinate[];
+  colors: RwColor[];
+  triangles: { a: number; b: number; c: number }[];
+  triangleMaterialIndices: number[];
+  materials: RwBreakableMaterial[];
+}
+
+export interface RwBreakableMaterial {
+  textureName: string;
+  maskName: string;
+  color: { r: number; g: number; b: number };
 }
 
 export interface RwGeometryList {

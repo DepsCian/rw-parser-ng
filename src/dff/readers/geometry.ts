@@ -2,7 +2,12 @@ import type { RwTextureCoordinate } from "../../common/types";
 import type { RwFile, RwSectionHeader } from "../../core/rw-file";
 import { RwSections } from "../../core/rw-sections";
 import { unpackVersion } from "../../core/rw-version";
-import type { Rw2dEffect, RwGeometry, RwGeometryList } from "../types";
+import type {
+  Rw2dEffect,
+  RwBreakable,
+  RwGeometry,
+  RwGeometryList,
+} from "../types";
 import { read2dEffects } from "./2d-effect";
 import { readMaterialList } from "./material";
 import { readBinMesh, readSkin } from "./mesh";
@@ -115,6 +120,7 @@ export function readGeometry(file: RwFile, versionNumber: number): RwGeometry {
   let skin;
   let effects2d: Rw2dEffect[] | undefined;
   let extraVertColour;
+  let breakable: RwBreakable | undefined;
   let relativePosition = 0;
 
   while (relativePosition < extensionSize) {
@@ -143,6 +149,9 @@ export function readGeometry(file: RwFile, versionNumber: number): RwGeometry {
           });
         }
         break;
+      case RwSections.RwBreakable:
+        breakable = readBreakable(file);
+        break;
       default:
         file.skip(extHeader.sectionSize);
         break;
@@ -167,5 +176,89 @@ export function readGeometry(file: RwFile, versionNumber: number): RwGeometry {
     skin,
     effects2d,
     extraVertColour,
+    breakable,
+  };
+}
+
+function readBreakable(file: RwFile): RwBreakable | undefined {
+  const sectionHeader = file.readUint32();
+  if (!sectionHeader) return undefined;
+
+  const positionRule = file.readUint32();
+  const numVertices = file.readUint16();
+  file.skip(2);
+  file.skip(4 * 3);
+  const numTriangles = file.readUint16();
+  file.skip(2);
+  file.skip(4 * 2);
+  const numMaterials = file.readUint16();
+  file.skip(2);
+  file.skip(4 * 4);
+
+  const vertices = [];
+  for (let i = 0; i < numVertices; i++) {
+    vertices.push({
+      x: file.readFloat(),
+      y: file.readFloat(),
+      z: file.readFloat(),
+    });
+  }
+
+  const texCoords = [];
+  for (let i = 0; i < numVertices; i++) {
+    texCoords.push({ u: file.readFloat(), v: file.readFloat() });
+  }
+
+  const colors = [];
+  for (let i = 0; i < numVertices; i++) {
+    colors.push({
+      r: file.readUint8(),
+      g: file.readUint8(),
+      b: file.readUint8(),
+      a: file.readUint8(),
+    });
+  }
+
+  const triangles = [];
+  for (let i = 0; i < numTriangles; i++) {
+    triangles.push({
+      a: file.readUint16(),
+      b: file.readUint16(),
+      c: file.readUint16(),
+    });
+  }
+
+  const triangleMaterialIndices = [];
+  for (let i = 0; i < numTriangles; i++) {
+    triangleMaterialIndices.push(file.readUint16());
+  }
+
+  const textureNames: string[] = [];
+  for (let i = 0; i < numMaterials; i++) {
+    textureNames.push(file.readString(32).replace(/\0+$/, ""));
+  }
+
+  const maskNames: string[] = [];
+  for (let i = 0; i < numMaterials; i++) {
+    maskNames.push(file.readString(32).replace(/\0+$/, ""));
+  }
+
+  const materials = [];
+  for (let i = 0; i < numMaterials; i++) {
+    materials.push({
+      textureName: textureNames[i],
+      maskName: maskNames[i],
+      color: { r: file.readFloat(), g: file.readFloat(), b: file.readFloat() },
+    });
+  }
+
+  return {
+    positionRule,
+    vertices,
+    texCoords,
+    colors,
+    triangles,
+    triangleMaterialIndices,
+    materials,
   };
 }

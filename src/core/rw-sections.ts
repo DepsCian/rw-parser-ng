@@ -17,6 +17,7 @@ export enum RwSections {
   RwAnim = 0x11e,
   RwMaterialEffectsPLG = 0x0120,
   RwExtraVertColour = 0x0253f2f9,
+  RwBreakable = 0x0253f2fd,
   RwReflectionMaterial = 0x0253f2fc,
   Rw2dEffect = 0x0253f2f8,
   RwNodeName = 0x0253f2fe,
