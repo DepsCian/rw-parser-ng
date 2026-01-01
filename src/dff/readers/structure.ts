@@ -1,5 +1,12 @@
 import type { RwFile } from "../../core/rw-file";
-import type { RwAnimNode, RwAtomic, RwBone, RwClump, RwFrame, RwFrameList } from "../types";
+import type {
+  RwAnimNode,
+  RwAtomic,
+  RwBone,
+  RwClump,
+  RwFrame,
+  RwFrameList,
+} from "../types";
 
 export function readClump(file: RwFile): RwClump {
   const { versionNumber } = file.readSectionHeader();
@@ -53,7 +60,7 @@ export function readAnimNode(file: RwFile): RwAnimNode {
   const boneCount = file.readInt32();
   const bones: RwBone[] = [];
 
-  if (boneId === 0) {
+  if (boneCount > 0) {
     file.skip(8);
   }
 
