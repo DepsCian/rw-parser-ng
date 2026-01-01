@@ -1,4 +1,4 @@
-import { RwFile } from "../RwFile";
+import { RwFile } from "../rw-file";
 import { RwIfp } from "./types";
 import { readAnp3 } from "./anp3-reader";
 import { readAnpk } from "./anpk-reader";

@@ -1,5 +1,11 @@
-import { RwFile } from "../RwFile";
-import { IfpVersion, RwIfp, RwIfpAnimation, RwIfpBone, RwIfpKeyframe } from "./types";
+import { RwFile } from "../rw-file";
+import {
+  IfpVersion,
+  RwIfp,
+  RwIfpAnimation,
+  RwIfpBone,
+  RwIfpKeyframe,
+} from "./types";
 
 export function readAnpk(file: RwFile): RwIfp {
   file.skip(4); // ANPK signature
@@ -71,14 +77,18 @@ function readBone(file: RwFile): RwIfpBone {
       const qz = file.readFloat();
       const qw = file.readFloat();
 
-      let px = 0, py = 0, pz = 0;
+      let px = 0,
+        py = 0,
+        pz = 0;
       if (hasTranslation) {
         px = file.readFloat();
         py = file.readFloat();
         pz = file.readFloat();
       }
 
-      let sx = 1, sy = 1, sz = 1;
+      let sx = 1,
+        sy = 1,
+        sz = 1;
       if (hasScale) {
         sx = file.readFloat();
         sy = file.readFloat();

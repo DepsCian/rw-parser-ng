@@ -1,14 +1,9 @@
-import { RwFile } from "../RwFile";
-import { RwSections } from "../RwSections";
-import { RwParseStructureNotFoundError } from "../errors/RwParseError";
-import RwVersion from "../utils/RwVersion";
+import { RwFile } from "../rw-file";
+import { RwSections } from "../rw-sections";
+import { RwParseStructureNotFoundError } from "../errors/rw-parse-error";
+import { getVersionString, unpackVersion } from "../utils/rw-version";
 import { DffModelType } from "./dff-model-type";
-import {
-  RwAnimNode,
-  RwDff,
-  RwFrameList,
-  RwGeometryList,
-} from "./types";
+import { RwAnimNode, RwDff, RwFrameList, RwGeometryList } from "./types";
 import {
   readAnimNode,
   readAtomic,
@@ -36,7 +31,7 @@ export class DffParser extends RwFile {
         header = this.readSectionHeader();
       } catch (error) {
         console.warn(
-          `Failed to read section header at offset ${this.getPosition().toString(16)}: ${error instanceof Error ? error.message : error}. Truncating file.`
+          `Failed to read section header at offset ${this.getPosition().toString(16)}: ${error instanceof Error ? error.message : error}. Truncating file.`,
         );
         break;
       }
@@ -46,15 +41,15 @@ export class DffParser extends RwFile {
 
       if (this.getPosition() + header.sectionSize > this.getSize()) {
         console.warn(
-          `Section at offset ${this.getPosition().toString(16)} claims size ${header.sectionSize} but only ${this.getSize() - this.getPosition()} bytes remaining. Truncating file.`
+          `Section at offset ${this.getPosition().toString(16)} claims size ${header.sectionSize} but only ${this.getSize() - this.getPosition()} bytes remaining. Truncating file.`,
         );
         break;
       }
 
       switch (header.sectionType) {
         case RwSections.RwClump:
-          versionNumber = RwVersion.unpackVersion(header.versionNumber);
-          version = RwVersion.versions[versionNumber];
+          versionNumber = unpackVersion(header.versionNumber);
+          version = getVersionString(versionNumber);
           break;
         case RwSections.RwFrameList:
           frameList = readFrameList(this);
@@ -107,7 +102,7 @@ export class DffParser extends RwFile {
       dummies.some(
         (d) =>
           d.toLowerCase().includes("wheel") ||
-          d.toLowerCase().includes("chassis")
+          d.toLowerCase().includes("chassis"),
       )
     ) {
       modelType = DffModelType.VEHICLE;

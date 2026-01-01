@@ -1,4 +1,4 @@
-import { RwFile } from "../../RwFile";
+import { RwFile } from "../../rw-file";
 import {
   RwAnimNode,
   RwAtomic,

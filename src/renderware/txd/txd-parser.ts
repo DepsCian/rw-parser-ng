@@ -1,6 +1,14 @@
-import { RwFile } from "../RwFile";
-import { PaletteType, PlatformType, RasterFormat } from "../utils/ImageFormatEnums";
-import { decodeDxtBitmap, decodePaletteBitmap, decodeRasterBitmap } from "./bitmap-decoder";
+import { RwFile } from "../rw-file";
+import {
+  PaletteType,
+  PlatformType,
+  RasterFormat,
+} from "../utils/image-format-enums";
+import {
+  decodeDxtBitmap,
+  decodePaletteBitmap,
+  decodeRasterBitmap,
+} from "./bitmap-decoder";
 import { RwTextureNative, RwTextureDictionary, RwTxd } from "./types";
 
 export class TxdParser extends RwFile {
@@ -60,7 +68,13 @@ export class TxdParser extends RwFile {
     const pixelFormat = rasterFormat & 0x0f00;
     const palette =
       paletteType !== PaletteType.PALETTE_NONE
-        ? this.read(paletteType === PaletteType.PALETTE_8 ? 1024 : depth === 4 ? 64 : 128)
+        ? this.read(
+            paletteType === PaletteType.PALETTE_8
+              ? 1024
+              : depth === 4
+                ? 64
+                : 128,
+          )
         : new Uint8Array(0);
 
     const mipmaps: number[][] = [];
@@ -71,9 +85,18 @@ export class TxdParser extends RwFile {
 
       if (i === 0) {
         const bitmap = this.decodeBitmap(
-          platformId, compressionFlags, compressed, alpha,
-          paletteType, depth, pixelFormat, d3dFormat,
-          raster, palette, width, height
+          platformId,
+          compressionFlags,
+          compressed,
+          alpha,
+          paletteType,
+          depth,
+          pixelFormat,
+          d3dFormat,
+          raster,
+          palette,
+          width,
+          height,
         );
         mipmaps.push(Array.from(bitmap));
       }
@@ -82,23 +105,61 @@ export class TxdParser extends RwFile {
     this.skip(this.readSectionHeader().sectionSize);
 
     return {
-      platformId, filterMode, uAddressing, vAddressing,
-      textureName, maskName, rasterFormat, d3dFormat,
-      width, height, depth, mipmapCount, rasterType,
-      alpha, cubeTexture, autoMipMaps, compressed, mipmaps,
+      platformId,
+      filterMode,
+      uAddressing,
+      vAddressing,
+      textureName,
+      maskName,
+      rasterFormat,
+      d3dFormat,
+      width,
+      height,
+      depth,
+      mipmapCount,
+      rasterType,
+      alpha,
+      cubeTexture,
+      autoMipMaps,
+      compressed,
+      mipmaps,
     };
   }
 
   private decodeBitmap(
-    platformId: number, compressionFlags: number, compressed: boolean, alpha: boolean,
-    paletteType: number, depth: number, pixelFormat: number, d3dFormat: string,
-    raster: Uint8Array, palette: Uint8Array, width: number, height: number
+    platformId: number,
+    compressionFlags: number,
+    compressed: boolean,
+    alpha: boolean,
+    paletteType: number,
+    depth: number,
+    pixelFormat: number,
+    d3dFormat: string,
+    raster: Uint8Array,
+    palette: Uint8Array,
+    width: number,
+    height: number,
   ): Uint8Array {
     if (palette.length !== 0) {
-      const noAlphaFormats = [RasterFormat.RASTER_565, RasterFormat.RASTER_LUM, RasterFormat.RASTER_888, RasterFormat.RASTER_555];
-      const hasAlpha = (platformId === PlatformType.D3D9 && alpha) ||
-                       (platformId === PlatformType.D3D8 && !noAlphaFormats.includes(pixelFormat));
-      return decodePaletteBitmap(paletteType, depth, hasAlpha, raster, palette, width, height);
+      const noAlphaFormats = [
+        RasterFormat.RASTER_565,
+        RasterFormat.RASTER_LUM,
+        RasterFormat.RASTER_888,
+        RasterFormat.RASTER_555,
+      ];
+      const hasAlpha =
+        (platformId === PlatformType.D3D9 && alpha) ||
+        (platformId === PlatformType.D3D8 &&
+          !noAlphaFormats.includes(pixelFormat));
+      return decodePaletteBitmap(
+        paletteType,
+        depth,
+        hasAlpha,
+        raster,
+        palette,
+        width,
+        height,
+      );
     }
 
     if (platformId === PlatformType.D3D8 && compressionFlags !== 0) {

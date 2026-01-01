@@ -1,9 +1,25 @@
-import { ImageDecoder } from "../utils/ImageDecoder";
+import { bc1, bc2, bc3 } from "../utils/bc-decoder";
+import {
+  bgra1555,
+  bgra4444,
+  bgra555,
+  bgra565,
+  bgra888,
+  bgra8888,
+} from "../utils/bgra-decoder";
+import {
+  lum8,
+  lum8a8,
+  pal4,
+  pal4NoAlpha,
+  pal8,
+  pal8NoAlpha,
+} from "../utils/palette-decoder";
 import {
   D3DFormat,
   PaletteType,
   RasterFormat,
-} from "../utils/ImageFormatEnums";
+} from "../utils/image-format-enums";
 
 export function decodePaletteBitmap(
   paletteType: number,
@@ -16,13 +32,12 @@ export function decodePaletteBitmap(
 ): Uint8Array {
   if (paletteType !== PaletteType.PALETTE_8 && depth === 4) {
     return hasAlpha
-      ? ImageDecoder.pal4(raster, palette, width, height)
-      : ImageDecoder.pal4NoAlpha(raster, palette, width, height);
+      ? pal4(raster, palette, width, height)
+      : pal4NoAlpha(raster, palette, width, height);
   }
-
   return hasAlpha
-    ? ImageDecoder.pal8(raster, palette, width, height)
-    : ImageDecoder.pal8NoAlpha(raster, palette, width, height);
+    ? pal8(raster, palette, width, height)
+    : pal8NoAlpha(raster, palette, width, height);
 }
 
 export function decodeDxtBitmap(
@@ -33,17 +48,17 @@ export function decodeDxtBitmap(
 ): Uint8Array {
   switch (dxtType) {
     case D3DFormat.D3D_DXT1:
-      return ImageDecoder.bc1(raster, width, height);
+      return bc1(raster, width, height);
     case D3DFormat.D3D_DXT2:
-      return ImageDecoder.bc2(raster, width, height, true);
+      return bc2(raster, width, height, true);
     case D3DFormat.D3D_DXT3:
-      return ImageDecoder.bc2(raster, width, height, false);
+      return bc2(raster, width, height, false);
     case D3DFormat.D3D_DXT4:
-      return ImageDecoder.bc3(raster, width, height, true);
+      return bc3(raster, width, height, true);
     case D3DFormat.D3D_DXT5:
-      return ImageDecoder.bc3(raster, width, height, false);
+      return bc3(raster, width, height, false);
     case D3DFormat.D3DFMT_A8L8:
-      return ImageDecoder.lum8a8(raster, width, height);
+      return lum8a8(raster, width, height);
     default:
       return new Uint8Array(0);
   }
@@ -57,19 +72,19 @@ export function decodeRasterBitmap(
 ): Uint8Array {
   switch (rasterFormat) {
     case RasterFormat.RASTER_1555:
-      return ImageDecoder.bgra1555(raster, width, height);
+      return bgra1555(raster, width, height);
     case RasterFormat.RASTER_565:
-      return ImageDecoder.bgra565(raster, width, height);
+      return bgra565(raster, width, height);
     case RasterFormat.RASTER_4444:
-      return ImageDecoder.bgra4444(raster, width, height);
+      return bgra4444(raster, width, height);
     case RasterFormat.RASTER_LUM:
-      return ImageDecoder.lum8(raster, width, height);
+      return lum8(raster, width, height);
     case RasterFormat.RASTER_8888:
-      return ImageDecoder.bgra8888(raster, width, height);
+      return bgra8888(raster, width, height);
     case RasterFormat.RASTER_888:
-      return ImageDecoder.bgra888(raster, width, height);
+      return bgra888(raster, width, height);
     case RasterFormat.RASTER_555:
-      return ImageDecoder.bgra555(raster, width, height);
+      return bgra555(raster, width, height);
     default:
       return new Uint8Array(0);
   }

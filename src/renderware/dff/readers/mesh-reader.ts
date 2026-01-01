@@ -1,4 +1,4 @@
-import { RwFile } from "../../RwFile";
+import { RwFile } from "../../rw-file";
 import { RwBinMesh, RwMesh, RwSkin } from "../types";
 
 export function readMesh(file: RwFile): RwMesh {

@@ -1,4 +1,4 @@
-import { RwFile } from "../../RwFile";
+import { RwFile } from "../../rw-file";
 import { RwMaterial, RwMaterialList, RwTexture } from "../types";
 
 export function readTexture(file: RwFile): RwTexture {
@@ -17,7 +17,13 @@ export function readTexture(file: RwFile): RwTexture {
   file.skip(file.readSectionHeader().sectionSize);
   file.skip(file.readSectionHeader().sectionSize);
 
-  return { textureFiltering, uAddressing, vAddressing, usesMipLevels, textureName };
+  return {
+    textureFiltering,
+    uAddressing,
+    vAddressing,
+    usesMipLevels,
+    textureName,
+  };
 }
 
 export function readMaterial(file: RwFile): RwMaterial {

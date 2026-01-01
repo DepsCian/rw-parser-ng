@@ -1,5 +1,11 @@
-import { RwFile } from "../RwFile";
-import { IfpVersion, RwIfp, RwIfpAnimation, RwIfpBone, RwIfpKeyframe } from "./types";
+import { RwFile } from "../rw-file";
+import {
+  IfpVersion,
+  RwIfp,
+  RwIfpAnimation,
+  RwIfpBone,
+  RwIfpKeyframe,
+} from "./types";
 
 const QUAT_SCALE = 4096.0;
 const POS_SCALE = 1024.0;
@@ -48,7 +54,9 @@ function readBone(file: RwFile): RwIfpBone {
     const qw = file.readInt16() / QUAT_SCALE;
     const time = file.readInt16();
 
-    let px = 0, py = 0, pz = 0;
+    let px = 0,
+      py = 0,
+      pz = 0;
     if (hasTranslation) {
       px = file.readInt16() / POS_SCALE;
       py = file.readInt16() / POS_SCALE;
