@@ -1,17 +1,9 @@
-import { RwFile } from "../core/rw-file";
 import { PaletteType, PlatformType, RasterFormat } from "../codecs/formats";
-import {
-  decodeDxtBitmap,
-  decodePaletteBitmap,
-  decodeRasterBitmap,
-} from "./bitmap-decoder";
-import { RwTextureNative, RwTextureDictionary, RwTxd } from "./types";
+import { RwFile } from "../core/rw-file";
+import { decodeDxtBitmap, decodePaletteBitmap, decodeRasterBitmap } from "./bitmap-decoder";
+import type { RwTextureDictionary, RwTextureNative, RwTxd } from "./types";
 
 export class TxdParser extends RwFile {
-  constructor(stream: Buffer) {
-    super(stream);
-  }
-
   parse(): RwTxd {
     return { textureDictionary: this.readTextureDictionary() };
   }
@@ -64,13 +56,7 @@ export class TxdParser extends RwFile {
     const pixelFormat = rasterFormat & 0x0f00;
     const palette =
       paletteType !== PaletteType.PALETTE_NONE
-        ? this.read(
-            paletteType === PaletteType.PALETTE_8
-              ? 1024
-              : depth === 4
-                ? 64
-                : 128,
-          )
+        ? this.read(paletteType === PaletteType.PALETTE_8 ? 1024 : depth === 4 ? 64 : 128)
         : new Uint8Array(0);
 
     const mipmaps: number[][] = [];
@@ -145,21 +131,12 @@ export class TxdParser extends RwFile {
       ];
       const hasAlpha =
         (platformId === PlatformType.D3D9 && alpha) ||
-        (platformId === PlatformType.D3D8 &&
-          !noAlphaFormats.includes(pixelFormat));
-      return decodePaletteBitmap(
-        paletteType,
-        depth,
-        hasAlpha,
-        raster,
-        palette,
-        width,
-        height,
-      );
+        (platformId === PlatformType.D3D8 && !noAlphaFormats.includes(pixelFormat));
+      return decodePaletteBitmap(paletteType, depth, hasAlpha, raster, palette, width, height);
     }
 
     if (platformId === PlatformType.D3D8 && compressionFlags !== 0) {
-      return decodeDxtBitmap("DXT" + compressionFlags, raster, width, height);
+      return decodeDxtBitmap(`DXT${compressionFlags}`, raster, width, height);
     }
 
     if (platformId === PlatformType.D3D9 && compressed) {

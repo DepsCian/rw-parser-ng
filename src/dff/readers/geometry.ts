@@ -1,15 +1,12 @@
-import { RwTextureCoordinate } from "../../common/types";
-import { RwFile, RwSectionHeader } from "../../core/rw-file";
+import type { RwTextureCoordinate } from "../../common/types";
+import type { RwFile, RwSectionHeader } from "../../core/rw-file";
 import { RwSections } from "../../core/rw-sections";
 import { unpackVersion } from "../../core/rw-version";
-import { RwGeometry, RwGeometryList } from "../types";
+import type { RwGeometry, RwGeometryList } from "../types";
 import { readMaterialList } from "./material";
 import { readBinMesh, readSkin } from "./mesh";
 
-export function readGeometryList(
-  file: RwFile,
-  header: RwSectionHeader,
-): RwGeometryList {
+export function readGeometryList(file: RwFile, header: RwSectionHeader): RwGeometryList {
   file.readSectionHeader();
   const geometricObjectCount = file.readUint32();
   const geometries: RwGeometry[] = [];
@@ -110,8 +107,8 @@ export function readGeometry(file: RwFile, versionNumber: number): RwGeometry {
 
   const materialList = readMaterialList(file);
   const extensionSize = file.readSectionHeader().sectionSize;
-  let binMesh = undefined;
-  let skin = undefined;
+  let binMesh;
+  let skin;
   let relativePosition = 0;
 
   while (relativePosition < extensionSize) {

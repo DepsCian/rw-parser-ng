@@ -1,13 +1,9 @@
 import { RwFile } from "../core/rw-file";
-import { RwIfp } from "./types";
 import { readAnp3 } from "./readers/anp3";
 import { readAnpk } from "./readers/anpk";
+import type { RwIfp } from "./types";
 
 export class IfpParser extends RwFile {
-  constructor(buffer: Buffer) {
-    super(buffer);
-  }
-
   public parse(): RwIfp {
     const signature = this.readString(4);
     this.setPosition(0);

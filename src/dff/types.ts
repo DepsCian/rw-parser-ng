@@ -1,4 +1,4 @@
-import {
+import type {
   RwColor,
   RwMatrix3,
   RwMatrix4,
@@ -7,7 +7,7 @@ import {
   RwTriangle,
   RwVector3,
 } from "../common/types";
-import { DffModelType } from "./dff-model-type";
+import type { DffModelType } from "./dff-model-type";
 
 export interface RwDff {
   modelType: DffModelType;

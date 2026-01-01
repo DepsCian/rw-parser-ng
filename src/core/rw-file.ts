@@ -7,10 +7,6 @@ export interface RwSectionHeader {
 }
 
 export class RwFile extends ByteStream {
-  constructor(stream: Buffer) {
-    super(stream);
-  }
-
   public readSectionHeader(): RwSectionHeader {
     if (this.getPosition() + 12 > this.getSize()) {
       throw new Error(

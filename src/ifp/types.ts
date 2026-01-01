@@ -1,4 +1,4 @@
-import { RwQuaternion, RwVector3 } from "../common/types";
+import type { RwQuaternion, RwVector3 } from "../common/types";
 
 export enum IfpVersion {
   ANP3,

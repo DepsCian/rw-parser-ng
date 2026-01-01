@@ -1,4 +1,4 @@
-import { FxInterpData } from "./common";
+import type { FxInterpData } from "./common";
 
 export interface FxInfoEmRate {
   type: "emrate";

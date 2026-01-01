@@ -1,17 +1,11 @@
-import { FxInfo, FxInterpData } from "./types";
+import type { FxInfo, FxInterpData } from "./types";
 
 const DEFAULT_INTERP: FxInterpData = { looped: false, keys: [] };
 
-export function parseInfo(
-  typeKey: string,
-  interps: Record<string, FxInterpData>,
-): FxInfo | null {
+export function parseInfo(typeKey: string, interps: Record<string, FxInterpData>): FxInfo | null {
   const get = (key: string, ...alt: string[]) =>
     interps[key] ??
-    alt.reduce(
-      (r, k) => r ?? interps[k],
-      undefined as FxInterpData | undefined,
-    ) ??
+    alt.reduce((r, k) => r ?? interps[k], undefined as FxInterpData | undefined) ??
     DEFAULT_INTERP;
 
   switch (typeKey) {

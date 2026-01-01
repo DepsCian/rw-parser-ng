@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["lib/**", "node_modules/**"]
+    "includes": ["src/**", "tests/**"]
   },
   "formatter": {
     "enabled": true,
@@ -18,7 +18,17 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "suspicious": {
+        "noImplicitAnyLet": "off",
+        "noNonNullAssertedOptionalChain": "off"
+      },
+      "complexity": {
+        "useSimpleNumberKeys": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off"
+      }
     }
   },
   "javascript": {

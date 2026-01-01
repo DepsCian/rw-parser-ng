@@ -1,3 +1,3 @@
+export * from "./bitmap-decoder";
 export * from "./parser";
 export * from "./types";
-export * from "./bitmap-decoder";

@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync } from "node:fs";
 import { IfpParser, IfpVersion } from "../../src";
 
 describe("IFP Parser - ped.ifp", () => {

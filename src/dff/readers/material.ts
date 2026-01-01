@@ -1,5 +1,5 @@
-import { RwFile } from "../../core/rw-file";
-import { RwMaterial, RwMaterialList, RwTexture } from "../types";
+import type { RwFile } from "../../core/rw-file";
+import type { RwMaterial, RwMaterialList, RwTexture } from "../types";
 
 export function readTexture(file: RwFile): RwTexture {
   file.readSectionHeader();

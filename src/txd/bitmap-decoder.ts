@@ -1,21 +1,7 @@
+import { bgra555, bgra565, bgra888, bgra1555, bgra4444, bgra8888 } from "../codecs/bitmap";
 import { bc1, bc2, bc3 } from "../codecs/dxt";
-import {
-  bgra1555,
-  bgra4444,
-  bgra555,
-  bgra565,
-  bgra888,
-  bgra8888,
-} from "../codecs/bitmap";
-import {
-  lum8,
-  lum8a8,
-  pal4,
-  pal4NoAlpha,
-  pal8,
-  pal8NoAlpha,
-} from "../codecs/palette";
 import { D3DFormat, PaletteType, RasterFormat } from "../codecs/formats";
+import { lum8, lum8a8, pal4, pal4NoAlpha, pal8, pal8NoAlpha } from "../codecs/palette";
 
 export function decodePaletteBitmap(
   paletteType: number,

@@ -1,5 +1,5 @@
-import { FxBoundingSphere, FxMatrix } from "./common";
-import { FxInfo } from "./info";
+import type { FxBoundingSphere, FxMatrix } from "./common";
+import type { FxInfo } from "./info";
 
 export interface FxEmitterBP {
   name: string;

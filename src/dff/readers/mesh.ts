@@ -1,5 +1,5 @@
-import { RwFile } from "../../core/rw-file";
-import { RwBinMesh, RwMesh, RwSkin } from "../types";
+import type { RwFile } from "../../core/rw-file";
+import type { RwBinMesh, RwMesh, RwSkin } from "../types";
 
 export function readMesh(file: RwFile): RwMesh {
   const indexCount = file.readUint32();

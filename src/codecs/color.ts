@@ -15,26 +15,26 @@ export function decode565(bits: number): [number, number, number] {
 
 export function decode555(bits: number): [number, number, number] {
   return [
-    Math.round(((bits >> 10) & 0b11111) * 255 / 31),
-    Math.round(((bits >> 5) & 0b11111) * 255 / 31),
-    Math.round((bits & 0b11111) * 255 / 31),
+    Math.round((((bits >> 10) & 0b11111) * 255) / 31),
+    Math.round((((bits >> 5) & 0b11111) * 255) / 31),
+    Math.round(((bits & 0b11111) * 255) / 31),
   ];
 }
 
 export function decode1555(bits: number): [number, number, number, number] {
   return [
     Math.round(((bits >> 15) & 0b1) * 255),
-    Math.round(((bits >> 10) & 0b11111) * 255 / 31),
-    Math.round(((bits >> 5) & 0b11111) * 255 / 31),
-    Math.round((bits & 0b11111) * 255 / 31),
+    Math.round((((bits >> 10) & 0b11111) * 255) / 31),
+    Math.round((((bits >> 5) & 0b11111) * 255) / 31),
+    Math.round(((bits & 0b11111) * 255) / 31),
   ];
 }
 
 export function decode4444(bits: number): [number, number, number, number] {
   return [
-    Math.round(((bits >> 12) & 0b1111) * 255 / 15),
-    Math.round(((bits >> 8) & 0b1111) * 255 / 15),
-    Math.round(((bits >> 4) & 0b1111) * 255 / 15),
-    Math.round((bits & 0b1111) * 255 / 15),
+    Math.round((((bits >> 12) & 0b1111) * 255) / 15),
+    Math.round((((bits >> 8) & 0b1111) * 255) / 15),
+    Math.round((((bits >> 4) & 0b1111) * 255) / 15),
+    Math.round(((bits & 0b1111) * 255) / 15),
   ];
 }

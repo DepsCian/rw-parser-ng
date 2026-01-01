@@ -1,16 +1,6 @@
-import {
-  decode1555,
-  decode4444,
-  decode555,
-  decode565,
-  readUInt16LE,
-} from "./color";
+import { decode555, decode565, decode1555, decode4444, readUInt16LE } from "./color";
 
-export function bgra1555(
-  data: Uint8Array,
-  width: number,
-  height: number,
-): Uint8Array {
+export function bgra1555(data: Uint8Array, width: number, height: number): Uint8Array {
   const rgba = new Uint8Array(4 * width * height);
   let offset = 0;
   for (let i = 0; i < data.length; i += 2) {
@@ -23,11 +13,7 @@ export function bgra1555(
   return rgba;
 }
 
-export function bgra4444(
-  data: Uint8Array,
-  width: number,
-  height: number,
-): Uint8Array {
+export function bgra4444(data: Uint8Array, width: number, height: number): Uint8Array {
   const rgba = new Uint8Array(4 * width * height);
   let offset = 0;
   for (let i = 0; i < data.length; i += 2) {
@@ -40,11 +26,7 @@ export function bgra4444(
   return rgba;
 }
 
-export function bgra555(
-  data: Uint8Array,
-  width: number,
-  height: number,
-): Uint8Array {
+export function bgra555(data: Uint8Array, width: number, height: number): Uint8Array {
   const rgba = new Uint8Array(4 * width * height);
   let offset = 0;
   for (let i = 0; i < data.length; i += 2) {
@@ -57,11 +39,7 @@ export function bgra555(
   return rgba;
 }
 
-export function bgra565(
-  data: Uint8Array,
-  width: number,
-  height: number,
-): Uint8Array {
+export function bgra565(data: Uint8Array, width: number, height: number): Uint8Array {
   const rgba = new Uint8Array(4 * width * height);
   let offset = 0;
   for (let i = 0; i < data.length; i += 2) {
@@ -74,11 +52,7 @@ export function bgra565(
   return rgba;
 }
 
-export function bgra888(
-  data: Uint8Array,
-  width: number,
-  height: number,
-): Uint8Array {
+export function bgra888(data: Uint8Array, width: number, height: number): Uint8Array {
   const rgba = new Uint8Array(4 * width * height);
   for (let i = 0; i < data.length; i += 4) {
     rgba[i] = data[i + 2];
@@ -89,11 +63,7 @@ export function bgra888(
   return rgba;
 }
 
-export function bgra8888(
-  data: Uint8Array,
-  width: number,
-  height: number,
-): Uint8Array {
+export function bgra8888(data: Uint8Array, width: number, height: number): Uint8Array {
   const rgba = new Uint8Array(4 * width * height);
   for (let i = 0; i < data.length; i += 4) {
     rgba[i] = data[i + 2];

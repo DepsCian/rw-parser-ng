@@ -1,10 +1,10 @@
-import { RwFile } from "../../core/rw-file";
+import type { RwFile } from "../../core/rw-file";
 import {
   IfpVersion,
-  RwIfp,
-  RwIfpAnimation,
-  RwIfpBone,
-  RwIfpKeyframe,
+  type RwIfp,
+  type RwIfpAnimation,
+  type RwIfpBone,
+  type RwIfpKeyframe,
 } from "../types";
 
 const QUAT_SCALE = 4096.0;

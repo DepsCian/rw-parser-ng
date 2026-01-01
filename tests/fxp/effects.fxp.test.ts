@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync } from "node:fs";
 import { parseFxpContent } from "../../src";
 
 describe("FXP Parser - effects.fxp", () => {
@@ -12,9 +12,7 @@ describe("FXP Parser - effects.fxp", () => {
   test("prt_blood - system properties", () => {
     const system = result.systems.get("prt_blood")!;
     expect(system.name).toBe("prt_blood");
-    expect(system.filename).toBe(
-      "X:\\SA\\FxTools\\Data\\effects\\gta_pc\\particles/prt_blood.fxs",
-    );
+    expect(system.filename).toBe("X:\\SA\\FxTools\\Data\\effects\\gta_pc\\particles/prt_blood.fxs");
     expect(system.length).toBe(1);
     expect(system.playMode).toBe(2);
     expect(system.cullDist).toBe(50);

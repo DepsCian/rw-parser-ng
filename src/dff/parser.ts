@@ -1,27 +1,18 @@
+import { RwParseStructureNotFoundError } from "../core/errors";
 import { RwFile } from "../core/rw-file";
 import { RwSections } from "../core/rw-sections";
-import { RwParseStructureNotFoundError } from "../core/errors";
 import { getVersionString, unpackVersion } from "../core/rw-version";
 import { DffModelType } from "./dff-model-type";
-import { RwAnimNode, RwDff, RwFrameList, RwGeometryList } from "./types";
-import {
-  readAnimNode,
-  readAtomic,
-  readFrameList,
-  readGeometryList,
-} from "./readers";
+import { readAnimNode, readAtomic, readFrameList, readGeometryList } from "./readers";
+import type { RwAnimNode, RwDff, RwFrameList, RwGeometryList } from "./types";
 
 export class DffParser extends RwFile {
-  constructor(buffer: Buffer) {
-    super(buffer);
-  }
-
   parse(): RwDff {
     let version: string | undefined;
     let versionNumber: number | undefined;
-    let atomics: number[] = [];
-    let dummies: string[] = [];
-    let animNodes: RwAnimNode[] = [];
+    const atomics: number[] = [];
+    const dummies: string[] = [];
+    const animNodes: RwAnimNode[] = [];
     let geometryList: RwGeometryList | null = null;
     let frameList: RwFrameList | null = null;
 
@@ -54,7 +45,7 @@ export class DffParser extends RwFile {
         case RwSections.RwFrameList:
           frameList = readFrameList(this);
           break;
-        case RwSections.RwExtension:
+        case RwSections.RwExtension: {
           const extHeader = this.readSectionHeader();
           switch (extHeader.sectionType) {
             case RwSections.RwNodeName:
@@ -68,13 +59,15 @@ export class DffParser extends RwFile {
               break;
           }
           break;
+        }
         case RwSections.RwGeometryList:
           geometryList = readGeometryList(this, header);
           break;
-        case RwSections.RwAtomic:
+        case RwSections.RwAtomic: {
           const atomic = readAtomic(this);
           atomics[atomic.geometryIndex] = atomic.frameIndex;
           break;
+        }
         case RwSections.RwNodeName:
           dummies.push(this.readString(header.sectionSize));
           break;
@@ -99,11 +92,7 @@ export class DffParser extends RwFile {
     if (geometryList.geometries.some((g) => g.skin)) {
       modelType = DffModelType.SKIN;
     } else if (
-      dummies.some(
-        (d) =>
-          d.toLowerCase().includes("wheel") ||
-          d.toLowerCase().includes("chassis"),
-      )
+      dummies.some((d) => d.toLowerCase().includes("wheel") || d.toLowerCase().includes("chassis"))
     ) {
       modelType = DffModelType.VEHICLE;
     }

@@ -1,12 +1,5 @@
-import { RwFile } from "../../core/rw-file";
-import {
-  RwAnimNode,
-  RwAtomic,
-  RwBone,
-  RwClump,
-  RwFrame,
-  RwFrameList,
-} from "../types";
+import type { RwFile } from "../../core/rw-file";
+import type { RwAnimNode, RwAtomic, RwBone, RwClump, RwFrame, RwFrameList } from "../types";
 
 export function readClump(file: RwFile): RwClump {
   const { versionNumber } = file.readSectionHeader();

@@ -1,10 +1,6 @@
 import { decode565, readUInt16LE, readUInt32LE } from "./color";
 
-export function bc1(
-  data: Uint8Array,
-  width: number,
-  height: number,
-): Uint8Array {
+export function bc1(data: Uint8Array, width: number, height: number): Uint8Array {
   const rgba = new Uint8Array(4 * width * height);
   const colorPalette = new Uint8Array(16);
   let offset = 0;
@@ -217,9 +213,7 @@ export function bc3(
         alphaIndices[k] =
           shift <= 5
             ? (alphaBits[byteOffset] >> shift) & 0x7
-            : ((alphaBits[byteOffset] >> shift) |
-                (alphaBits[byteOffset + 1] << (8 - shift))) &
-              0x7;
+            : ((alphaBits[byteOffset] >> shift) | (alphaBits[byteOffset + 1] << (8 - shift))) & 0x7;
       }
 
       const baseIndex = (y * width + x) << 2;

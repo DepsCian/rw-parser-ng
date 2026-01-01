@@ -1,5 +1,5 @@
 import { parseInfo } from "./info-parser";
-import {
+import type {
   FxBoundingSphere,
   FxEmitterBP,
   FxInfo,
@@ -99,9 +99,7 @@ class FxpParserImpl {
 
     let boundingSphere: FxBoundingSphere | null = null;
     if (version > 103) {
-      const parts = this._readField("BOUNDINGSPHERE:")
-        .split(/\s+/)
-        .map(parseFloat);
+      const parts = this._readField("BOUNDINGSPHERE:").split(/\s+/).map(parseFloat);
       boundingSphere = {
         x: parts[0],
         y: parts[1],
@@ -182,9 +180,7 @@ class FxpParserImpl {
       if (this._currentLine()?.startsWith("TIMEMODEPRT:")) this._pos++;
 
       const interps =
-        typeKey === "underwater" || typeKey === "selflit"
-          ? {}
-          : this._parseAllInterps();
+        typeKey === "underwater" || typeKey === "selflit" ? {} : this._parseAllInterps();
       const info = parseInfo(typeKey, interps);
       if (info) infos.push(info);
     }
@@ -195,8 +191,7 @@ class FxpParserImpl {
     if (this._currentLine()?.startsWith("LODSTART:"))
       lodStart = parseFloat(this._readField("LODSTART:"));
     this._skipEmpty();
-    if (this._currentLine()?.startsWith("LODEND:"))
-      lodEnd = parseFloat(this._readField("LODEND:"));
+    if (this._currentLine()?.startsWith("LODEND:")) lodEnd = parseFloat(this._readField("LODEND:"));
 
     return {
       name,
@@ -288,11 +283,7 @@ class FxpParserImpl {
   }
 
   private _skipUnknownInfo(): void {
-    while (
-      this._pos < this._lines.length &&
-      !this._isBlockEnd(this._currentLine())
-    )
-      this._pos++;
+    while (this._pos < this._lines.length && !this._isBlockEnd(this._currentLine())) this._pos++;
   }
 
   private _readField(prefix: string): string {
@@ -314,11 +305,7 @@ class FxpParserImpl {
   }
 
   private _skipEmpty(): void {
-    while (
-      this._pos < this._lines.length &&
-      this._lines[this._pos].trim() === ""
-    )
-      this._pos++;
+    while (this._pos < this._lines.length && this._lines[this._pos].trim() === "") this._pos++;
   }
 
   private _currentLine(): string {
@@ -331,6 +318,6 @@ export function parseFxpContent(content: string): FxProject {
 }
 
 export function parseFxpFile(filePath: string): FxProject {
-  const fs = require("fs");
+  const fs = require("node:fs");
   return parseFxpContent(fs.readFileSync(filePath, "utf-8"));
 }
