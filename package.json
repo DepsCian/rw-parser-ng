@@ -39,7 +39,15 @@
     "fxp"
   ],
   "main": "lib/index.js",
+  "module": "lib/index.js",
   "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "require": "./lib/index.js"
+    }
+  },
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.3",
