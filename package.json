@@ -60,7 +60,8 @@
     "format": "biome format --write .",
     "prepare": "bun run build",
     "test": "bun test",
-    "check:package": "bash .github/scripts/check-package.sh"
+    "check:package": "bash .github/scripts/check-package.sh",
+    "bench": "bun benchmarks/run.ts"
   },
   "files": [
     "lib",
