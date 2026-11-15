@@ -77,6 +77,11 @@ export function workloads(): Workload[] {
     inputBytes: bytes.length,
     run: () => new ByteStream(bytes).readBytes(bytes.length)[0],
   });
+  cases.push({
+    name: "cursor/view",
+    inputBytes: bytes.length,
+    run: () => new ByteStream(bytes).readView(bytes.length)[0],
+  });
   for (const [name, blockSize, decode] of [
     ["BC1", 8, bc1],
     ["BC2", 16, bc2],
