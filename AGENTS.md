@@ -21,4 +21,4 @@ Release Please owns the release manifest, package version, and changelog after t
 
 CI requires build and Validate PR title. Preserve these check names because master protection depends on them. Pin Actions to full commit SHAs. Package smoke checks live in .github/scripts; do not add unit tests unless requested.
 
-For the initial npm bootstrap, a valid login does not satisfy publishing 2FA. Prefer npm stage publish followed by stage approval. Staging is asynchronous: inspect its status and wait for validation before approval. Never request passwords, tokens, or authentication codes in chat.
+For the initial npm bootstrap, a valid login does not satisfy publishing 2FA. New npm 2FA enrollments require WebAuthn; do not recommend adding a TOTP authenticator app. Prefer npm stage publish followed by stage approval. Staging is asynchronous: inspect its status and wait for validation before approval. Never request passwords, tokens, or authentication codes in chat.
