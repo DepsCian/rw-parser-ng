@@ -27,3 +27,26 @@ export interface RwTextureNative {
   compressed: boolean;
   mipmaps: number[][];
 }
+
+export interface TxdStructureOptions {
+  copyData?: boolean;
+}
+
+export interface RwTextureMipmap {
+  width: number;
+  height: number;
+  data: Uint8Array;
+}
+
+export interface RwTextureNativeStructure extends Omit<RwTextureNative, "mipmaps"> {
+  compressionFlags: number;
+  palette: Uint8Array;
+  mipmaps: RwTextureMipmap[];
+}
+
+export interface RwTxdStructure {
+  textureDictionary: {
+    textureCount: number;
+    textureNatives: RwTextureNativeStructure[];
+  };
+}

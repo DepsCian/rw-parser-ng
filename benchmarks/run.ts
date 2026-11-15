@@ -34,7 +34,12 @@ const results = workloads().map((workload) => {
 });
 console.log(
   JSON.stringify(
-    { runtime: `Bun ${Bun.version}`, commit: process.env.GITHUB_SHA ?? null, sink, results },
+    {
+      runtime: `Bun ${process.versions.bun}`,
+      commit: process.env.GITHUB_SHA ?? null,
+      sink,
+      results,
+    },
     null,
     2,
   ),
@@ -42,7 +47,7 @@ console.log(
 if (process.env.GITHUB_STEP_SUMMARY) {
   appendFileSync(
     process.env.GITHUB_STEP_SUMMARY,
-    `## Benchmarks (Bun ${Bun.version})\n\n| Workload | Median ms | Input MB/s | Consumed bytes |\n| --- | ---: | ---: | ---: |\n` +
+    `## Benchmarks (Bun ${process.versions.bun})\n\n| Workload | Median ms | Input MB/s | Consumed bytes |\n| --- | ---: | ---: | ---: |\n` +
       results
         .map(
           (r) =>
