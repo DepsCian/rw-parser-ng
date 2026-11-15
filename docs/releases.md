@@ -20,10 +20,13 @@ Download the verified artifacts into an empty directory:
 gh release download rwkit-v1.0.0 --repo DepsCian/RWKit --pattern 'rwkit-1.0.0.tgz*'
 sha256sum --check rwkit-1.0.0.tgz.sha256
 npm login
-npm publish ./rwkit-1.0.0.tgz --access public
+npm stage publish ./rwkit-1.0.0.tgz --access public --tag latest
+npm stage list rwkit
+npm stage view <stage-id>
+npm stage approve <stage-id>
 ```
 
-Use the real npm CLI with the maintainer's login and 2FA. No npm token is needed in GitHub. This interactive bootstrap does not claim npm provenance; later OIDC publications generate provenance. Verify `npm view rwkit@1.0.0` and install the registry package into a temporary consumer before deprecating the old package.
+Use the real npm CLI with the maintainer's login and 2FA. Staging creates the new package without publishing it; approval performs the publishing authentication check. Wait for the staged artifact's validation to finish before approving it. Direct publication can return E403 without prompting for 2FA even when login succeeds. Enter authentication codes only in your own terminal, never in chat. No npm token is needed in GitHub. This interactive bootstrap does not claim npm provenance; later OIDC publications generate provenance. Verify `npm view rwkit@1.0.0` and install the registry package into a temporary consumer before deprecating the old package.
 
 ```sh
 npm deprecate 'rw-parser-ng@*' 'Renamed to rwkit. See https://github.com/DepsCian/RWKit/blob/master/MIGRATION.md'
