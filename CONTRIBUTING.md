@@ -16,4 +16,4 @@ Use a Conventional Commit PR title: `feat`, `fix`, `docs`, `style`, `refactor`, 
 
 Explain the problem, resulting behavior, compatibility impact, and verification. Link the relevant issue using `Fixes #<number>`. Keep changes focused and preserve attribution. Do not add unit tests unless requested; run the existing suite and targeted runtime checks.
 
-Master requires passing checks and resolved conversations. A second reviewer is not required for solo maintenance. Release PRs are maintained by automation and merged manually. See docs/releases.md for release operation.
+Master requires passing checks and resolved conversations. Release PRs are maintained by automation and merged manually. See docs/releases.md for release operation.
