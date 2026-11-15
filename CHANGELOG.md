@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/DepsCian/RWKit/compare/rwkit-v1.0.0...rwkit-v1.1.0) (2026-11-15)
+
+
+### Features
+
+* **core:** expose zero-copy byte views ([5dfbc38](https://github.com/DepsCian/RWKit/commit/5dfbc387af9d4ee7a737eca221f7012828e44adc))
+* **txd:** separate texture structure from pixel decoding ([ec57957](https://github.com/DepsCian/RWKit/commit/ec5795784791795973f4d510cadb884452d4195f))
+
+
+### Bug Fixes
+
+* **codecs:** clip partial DXT blocks to texture bounds ([40a5da8](https://github.com/DepsCian/RWKit/commit/40a5da898eb052b41a12cc84cf90baa948048a4b))
+
 ## 1.0.0 (2026-11-15)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "rwkit",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "TypeScript parsers for RenderWare DFF, TXD, IFP, and GTA particle effects.",
   "author": {
     "name": "DepsCian",
