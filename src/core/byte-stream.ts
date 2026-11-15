@@ -63,10 +63,14 @@ export class ByteStream {
   }
 
   public readBytes(size: number): Uint8Array {
+    return new Uint8Array(this.readView(size));
+  }
+
+  public readView(size: number): Uint8Array {
     this._validateRange(this._cursor, size);
     const data = this._stream.subarray(this._cursor, this._cursor + size);
     this._cursor += size;
-    return new Uint8Array(data);
+    return data;
   }
 
   public read(size: number): Uint8Array {
