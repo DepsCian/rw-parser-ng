@@ -1,5 +1,40 @@
 import type { FxInfo, FxInterpData } from "./types";
 
+export const INFO_TYPE_MAP: Record<string, string> = {
+  "FX_INFO_EMRATE_DATA:": "emrate",
+  "FX_INFO_EMSIZE_DATA:": "emsize",
+  "FX_INFO_EMSPEED_DATA:": "emspeed",
+  "FX_INFO_EMDIR_DATA:": "emdir",
+  "FX_INFO_EMANGLE_DATA:": "emangle",
+  "FX_INFO_EMLIFE_DATA:": "emlife",
+  "FX_INFO_EMPOS_DATA:": "empos",
+  "FX_INFO_EMWEATHER_DATA:": "emweather",
+  "FX_INFO_EMROTATION_DATA:": "emrotation",
+  "FX_INFO_NOISE_DATA:": "noise",
+  "FX_INFO_FORCE_DATA:": "force",
+  "FX_INFO_FRICTION_DATA:": "friction",
+  "FX_INFO_ATTRACTPT_DATA:": "attractpt",
+  "FX_INFO_ATTRACTLINE_DATA:": "attractline",
+  "FX_INFO_GROUNDCOLLIDE_DATA:": "groundcollide",
+  "FX_INFO_WIND_DATA:": "wind",
+  "FX_INFO_JITTER_DATA:": "jitter",
+  "FX_INFO_ROTSPEED_DATA:": "rotspeed",
+  "FX_INFO_FLOAT_DATA:": "float",
+  "FX_INFO_UNDERWATER_DATA:": "underwater",
+  "FX_INFO_COLOUR_DATA:": "colour",
+  "FX_INFO_SIZE_DATA:": "size",
+  "FX_INFO_SPRITERECT_DATA:": "spriterect",
+  "FX_INFO_HEATHAZE_DATA:": "heathaze",
+  "FX_INFO_TRAIL_DATA:": "trail",
+  "FX_INFO_FLAT_DATA:": "flat",
+  "FX_INFO_DIR_DATA:": "dir",
+  "FX_INFO_ANIMTEX_DATA:": "animtex",
+  "FX_INFO_COLOURRANGE_DATA:": "colourrange",
+  "FX_INFO_SELFLIT_DATA:": "selflit",
+  "FX_INFO_COLOURBRIGHT_DATA:": "colourbright",
+  "FX_INFO_SMOKE_DATA:": "smoke",
+};
+
 const DEFAULT_INTERP: FxInterpData = { looped: false, keys: [] };
 
 export function parseInfo(typeKey: string, interps: Record<string, FxInterpData>): FxInfo | null {
