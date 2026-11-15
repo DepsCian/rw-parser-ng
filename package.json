@@ -1,7 +1,7 @@
 {
-  "name": "rw-parser-ng",
-  "version": "2.3.0",
-  "description": "Parses RenderWare DFF, TXD and IFP files into usable format!",
+  "name": "rwkit",
+  "version": "1.0.0",
+  "description": "TypeScript parsers for RenderWare DFF, TXD, IFP, and GTA particle effects.",
   "author": {
     "name": "DepsCian",
     "url": "https://github.com/DepsCian"
@@ -17,10 +17,10 @@
     }
   ],
   "license": "GPL-3.0",
-  "homepage": "https://github.com/DepsCian/rw-parser-ng#readme",
+  "homepage": "https://github.com/DepsCian/RWKit#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DepsCian/rw-parser-ng.git"
+    "url": "git+https://github.com/DepsCian/RWKit.git"
   },
   "keywords": [
     "gta",
@@ -32,11 +32,11 @@
     "iii",
     "renderware",
     "parser",
-    "rw-parser",
     "dff",
     "txd",
     "ifp",
-    "fxp"
+    "fxp",
+    "rwkit"
   ],
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -59,13 +59,21 @@
     "lint": "biome check .",
     "format": "biome format --write .",
     "prepare": "bun run build",
-    "test": "bun test"
+    "test": "bun test",
+    "check:package": "bash .github/scripts/check-package.sh"
   },
   "files": [
     "lib",
     "src",
     "LICENSE",
     "README.md",
-    "tsconfig.json"
-  ]
+    "tsconfig.json",
+    "CREDITS.md",
+    "CHANGELOG.md",
+    "MIGRATION.md"
+  ],
+  "packageManager": "bun@1.4.4",
+  "bugs": {
+    "url": "https://github.com/DepsCian/RWKit/issues"
+  }
 }

@@ -1,6 +1,5 @@
 import type { RwFile } from "../../core/rw-file";
 import {
-  Rw2dEffectType,
   type Rw2dEffect,
   type Rw2dEffectAttractor,
   type Rw2dEffectCoverPoint,
@@ -10,6 +9,7 @@ import {
   type Rw2dEffectLight,
   type Rw2dEffectParticle,
   type Rw2dEffectRoadsign,
+  Rw2dEffectType,
 } from "../types";
 
 export function read2dEffects(file: RwFile, sectionSize: number): Rw2dEffect[] {
@@ -69,10 +69,7 @@ function read2dEffect(file: RwFile): Rw2dEffect | null {
   return effect;
 }
 
-function readLight(
-  file: RwFile,
-  position: { x: number; y: number; z: number },
-): Rw2dEffectLight {
+function readLight(file: RwFile, position: { x: number; y: number; z: number }): Rw2dEffectLight {
   const color = {
     r: file.readUint8(),
     g: file.readUint8(),
@@ -159,10 +156,7 @@ function readAttractor(
   };
 }
 
-function readEnEx(
-  file: RwFile,
-  position: { x: number; y: number; z: number },
-): Rw2dEffectEnEx {
+function readEnEx(file: RwFile, position: { x: number; y: number; z: number }): Rw2dEffectEnEx {
   const enterAngle = file.readFloat();
   const radiusX = file.readFloat();
   const radiusY = file.readFloat();

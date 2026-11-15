@@ -1,20 +1,13 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import {
-  DffParser,
-  Rw2dEffectType,
-  type Rw2dEffect,
-  type Rw2dEffectLight,
-} from "../../src/index";
+import { DffParser, type Rw2dEffect, type Rw2dEffectLight, Rw2dEffectType } from "../../src/index";
 
 describe("2dEffect parsing", () => {
   describe("lamppost1.dff", () => {
     let effects: Rw2dEffect[];
 
     beforeAll(async () => {
-      const dff = new DffParser(
-        await readFile(join(__dirname, "../assets/lamppost1.dff")),
-      ).parse();
+      const dff = new DffParser(await readFile(join(__dirname, "../assets/lamppost1.dff"))).parse();
       effects = dff.geometryList!.geometries[0].effects2d!;
     });
 
@@ -71,7 +64,9 @@ describe("2dEffect parsing", () => {
     });
 
     test("all effects are LIGHT type", () => {
-      effects.forEach((e) => expect(e.type).toBe(Rw2dEffectType.LIGHT));
+      effects.forEach((effect) => {
+        expect(effect.type).toBe(Rw2dEffectType.LIGHT);
+      });
     });
 
     test("has yellow light", () => {
