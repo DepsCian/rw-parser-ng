@@ -1,12 +1,12 @@
-# RenderWare Binary Stream Parser NG
+# RWKit
 
-[![npm](https://img.shields.io/npm/v/rw-parser-ng.svg)](https://www.npmjs.com/package/rw-parser-ng)
-[![CI](https://github.com/DepsCian/rw-parser-ng/actions/workflows/test.yml/badge.svg)](https://github.com/DepsCian/rw-parser-ng/actions/workflows/test.yml)
-[![License: GPL-3.0](https://img.shields.io/npm/l/rw-parser-ng.svg)](https://github.com/DepsCian/rw-parser-ng/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/v/rwkit.svg)](https://www.npmjs.com/package/rwkit)
+[![CI](https://github.com/DepsCian/RWKit/actions/workflows/test.yml/badge.svg)](https://github.com/DepsCian/RWKit/actions/workflows/test.yml)
+[![License: GPL-3.0](https://img.shields.io/npm/l/rwkit.svg)](https://github.com/DepsCian/RWKit/blob/master/LICENSE)
 
 A TypeScript library for parsing RenderWare binary stream files used in GTA III, Vice City, and San Andreas.
 
-This is a maintained fork of [rw-parser](https://github.com/Timic3/rw-parser) by Timic3.
+RWKit is maintained by DepsCian. See [migration instructions](MIGRATION.md) for existing users and [credits](CREDITS.md) for project origins.
 
 ## Supported Formats
 
@@ -32,11 +32,11 @@ This is a maintained fork of [rw-parser](https://github.com/Timic3/rw-parser) by
 ## Installation
 
 ```sh
-bun add rw-parser-ng
+bun add rwkit
 ```
 
 ```sh
-npm install rw-parser-ng
+npm install rwkit
 ```
 
 ## Usage
@@ -44,7 +44,7 @@ npm install rw-parser-ng
 ### DFF (3D Models)
 
 ```typescript
-import { DffParser } from 'rw-parser-ng';
+import { DffParser } from 'rwkit';
 import { readFileSync } from 'node:fs';
 
 const buffer = readFileSync('model.dff');
@@ -63,7 +63,7 @@ console.log(dff.animNodes);                        // Animation hierarchy
 ### TXD (Textures)
 
 ```typescript
-import { TxdParser } from 'rw-parser-ng';
+import { TxdParser } from 'rwkit';
 import { readFileSync } from 'node:fs';
 
 const buffer = readFileSync('textures.txd');
@@ -81,7 +81,7 @@ for (const texture of txd.textureDictionary.textureNatives) {
 ### IFP (Animations)
 
 ```typescript
-import { IfpParser } from 'rw-parser-ng';
+import { IfpParser } from 'rwkit';
 import { readFileSync } from 'node:fs';
 
 const buffer = readFileSync('animation.ifp');
@@ -102,7 +102,8 @@ for (const anim of ifp.animations) {
 ### FXP (Particle Effects)
 
 ```typescript
-import { parseFxpFile, parseFxpContent } from 'rw-parser-ng';
+import { parseFxpFile, parseFxpContent } from 'rwkit';
+import { readFileSync } from 'node:fs';
 
 // From file path
 const project = parseFxpFile('effects.fxp');
@@ -124,7 +125,7 @@ for (const [name, system] of project.systems) {
 The library works in browsers with a Buffer polyfill (provided by bundlers like Webpack, Vite, or esbuild):
 
 ```typescript
-import { DffParser } from 'rw-parser-ng';
+import { DffParser } from 'rwkit';
 
 const response = await fetch('model.dff');
 const arrayBuffer = await response.arrayBuffer();
@@ -264,24 +265,15 @@ bun run lint
 bun run format
 ```
 
-## Contributing
+## Project resources
 
-Contributions are welcome. Please open an issue or submit a pull request.
-
-When contributing:
-1. Fork the repository
-2. Create a feature branch
-3. Ensure tests pass with `bun test`
-4. Ensure code passes lint with `bun run lint`
-5. Submit a pull request
-
-## Credits
-
-- [Timic3](https://github.com/Timic3) - Original rw-parser author
-- [MegadreamsBE](https://github.com/MegadreamsBE) - Contributor
-- [AlterSDB](https://github.com/AlterSDB) - Contributor
-- [librw](https://github.com/aap/librw) - RenderWare reference implementation
-- [gta-reversed](https://github.com/gta-reversed/gta-reversed-modern) - GTA SA reverse engineering
+- [Contributing](CONTRIBUTING.md)
+- [Release process](docs/releases.md)
+- [Migration](MIGRATION.md)
+- [Security reporting](SECURITY.md)
+- [Support](SUPPORT.md)
+- [Code of conduct](CODE_OF_CONDUCT.md)
+- [Credits](CREDITS.md)
 
 ## License
 

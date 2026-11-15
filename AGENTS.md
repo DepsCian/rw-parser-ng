@@ -12,3 +12,11 @@ This is a Bun-based TypeScript library for RenderWare assets. The package entry 
 - Preserve parse error prototypes when compiling to ES5 so consumers can use `instanceof`.
 - Document module behavior in its README. Update this file when architecture or cross-module conventions change.
 - Do not add unit tests unless requested. Verify fixes with the existing suite and targeted runtime checks.
+
+## Repository and releases
+
+The repository is DepsCian/RWKit and the npm package is rwkit. Keep upstream attribution in CREDITS.md and ship it with LICENSE. MIGRATION.md describes the legacy package transition; never rewrite history or remove legacy tags.
+
+Release Please owns the release manifest, package version, and changelog after the initial 1.0.0 release. Use rwkit-vX.Y.Z tags. The GitHub App creates release PRs; maintainers merge them manually. Release and npm automation are separately gated by repository variables. See docs/releases.md before changing workflows, credentials, or publishing.
+
+CI requires build and Validate PR title. Preserve these check names because master protection depends on them. Pin Actions to full commit SHAs. Package smoke checks live in .github/scripts; do not add unit tests unless requested.

@@ -3,7 +3,7 @@ lib/
 build/
 output/
 coverage/
-scripts/
+/scripts/
 
 *.log
 *.tsbuildinfo

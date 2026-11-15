@@ -2,20 +2,12 @@ import type { RwTextureCoordinate } from "../../common/types";
 import type { RwFile, RwSectionHeader } from "../../core/rw-file";
 import { RwSections } from "../../core/rw-sections";
 import { unpackVersion } from "../../core/rw-version";
-import type {
-  Rw2dEffect,
-  RwBreakable,
-  RwGeometry,
-  RwGeometryList,
-} from "../types";
+import type { Rw2dEffect, RwBreakable, RwGeometry, RwGeometryList } from "../types";
 import { read2dEffects } from "./2d-effect";
 import { readMaterialList } from "./material";
 import { readBinMesh, readSkin } from "./mesh";
 
-export function readGeometryList(
-  file: RwFile,
-  header: RwSectionHeader,
-): RwGeometryList {
+export function readGeometryList(file: RwFile, header: RwSectionHeader): RwGeometryList {
   file.readSectionHeader();
   const geometricObjectCount = file.readUint32();
   const geometries: RwGeometry[] = [];

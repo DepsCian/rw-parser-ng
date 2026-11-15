@@ -1,0 +1,24 @@
+name: Bug report
+description: Report incorrect behavior in RWKit.
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: RWKit version and runtime
+      placeholder: RWKit version, Bun or Node version, operating system
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Include steps and a minimal redistributable example. Do not post security vulnerabilities here.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true

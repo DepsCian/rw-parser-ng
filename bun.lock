@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "rw-parser-ng",
+      "name": "rwkit",
       "devDependencies": {
         "@biomejs/biome": "^2.3.10",
         "@types/node": "^24.0.3",

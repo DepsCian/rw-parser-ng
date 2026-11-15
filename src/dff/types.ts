@@ -259,10 +259,7 @@ export interface Rw2dEffectEscalator {
 }
 
 export interface Rw2dEffectGeneric {
-  type:
-    | Rw2dEffectType.SUN_GLARE
-    | Rw2dEffectType.INTERIOR
-    | Rw2dEffectType.TRIGGER_POINT;
+  type: Rw2dEffectType.SUN_GLARE | Rw2dEffectType.INTERIOR | Rw2dEffectType.TRIGGER_POINT;
   position: RwVector3;
   data: Uint8Array;
 }
