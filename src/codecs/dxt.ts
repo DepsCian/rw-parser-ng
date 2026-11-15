@@ -46,6 +46,8 @@ export function bc1(data: Uint8Array, width: number, height: number): Uint8Array
           i = k & 3;
         const idx = baseIndex + ((j * width + i) << 2);
 
+        if (x + i >= width || y + j >= height) continue;
+
         rgba[idx] = colorPalette[colorIdx * 4];
         rgba[idx + 1] = colorPalette[colorIdx * 4 + 1];
         rgba[idx + 2] = colorPalette[colorIdx * 4 + 2];
@@ -118,6 +120,8 @@ export function bc2(
         const shift = (bitPos & 7) << 2;
         const alpha4 = ((byteIndex === 0 ? alpha0 : alpha1) >>> shift) & 0xf;
         const alpha = alphaTable[alpha4];
+
+        if (x + i >= width || y + j >= height) continue;
 
         rgba[idx] = colorPalette[colorIdx * 4];
         rgba[idx + 1] = colorPalette[colorIdx * 4 + 1];
@@ -224,6 +228,8 @@ export function bc3(
         const colorIdx = colorBits & 0x3;
         colorBits >>>= 2;
         const alpha = alphaPalette[alphaIndices[k] & 0x7];
+
+        if (x + i >= width || y + j >= height) continue;
 
         rgba[idx] = colorPalette[colorIdx * 4];
         rgba[idx + 1] = colorPalette[colorIdx * 4 + 1];

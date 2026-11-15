@@ -24,3 +24,5 @@ CI requires build and Validate PR title. Preserve these check names because mast
 Performance workloads live in benchmarks/ and run against compiled lib output with `bun run build` followed by `bun run bench`. CI reports timings without regression thresholds. Always distinguish input size from consumed bytes.
 
 ByteStream.readView returns shared input storage; read/readBytes retain copy semantics. Views outlive disposal and can retain the backing buffer.
+
+DXT decoders clip partial block writes but consume all encoded selectors. Preserve this behavior for small and non-multiple-of-four mip dimensions. Codec output is RGBA.
