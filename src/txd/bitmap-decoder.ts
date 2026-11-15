@@ -2,6 +2,7 @@ import { bgra555, bgra565, bgra888, bgra1555, bgra4444, bgra8888 } from "../code
 import { bc1, bc2, bc3 } from "../codecs/dxt";
 import { D3DFormat, PaletteType, RasterFormat } from "../codecs/formats";
 import { lum8, lum8a8, pal4, pal4NoAlpha, pal8, pal8NoAlpha } from "../codecs/palette";
+import { RwParseError } from "../core/errors";
 
 export function decodePaletteBitmap(
   paletteType: number,
@@ -42,7 +43,7 @@ export function decodeDxtBitmap(
     case D3DFormat.D3DFMT_A8L8:
       return lum8a8(raster, width, height);
     default:
-      return new Uint8Array(0);
+      throw new RwParseError(`Unsupported texture compression format: ${dxtType}`);
   }
 }
 
@@ -68,6 +69,6 @@ export function decodeRasterBitmap(
     case RasterFormat.RASTER_555:
       return bgra555(raster, width, height);
     default:
-      return new Uint8Array(0);
+      throw new RwParseError(`Unsupported texture raster format: 0x${rasterFormat.toString(16)}`);
   }
 }
