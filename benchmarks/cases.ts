@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { bc1, bc2, bc3 } from "../lib/codecs/dxt";
 import { ByteStream, DffParser, IfpParser, parseFxpContent, TxdParser } from "../lib/index";
+import { textureWorkloads } from "./txd";
 
 export interface Workload {
   name: string;
@@ -95,5 +96,5 @@ export function workloads(): Workload[] {
       run: () => decode(input, 256, 256, false)[0] + 1,
     });
   }
-  return cases;
+  return [...cases, ...textureWorkloads()];
 }

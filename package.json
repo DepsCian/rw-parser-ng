@@ -61,7 +61,8 @@
     "prepare": "bun run build",
     "test": "bun test",
     "check:package": "bash .github/scripts/check-package.sh",
-    "bench": "bun benchmarks/run.ts"
+    "bench": "bun benchmarks/run.ts",
+    "bench:check": "tsc --noEmit --target es2020 --module commonjs --esModuleInterop --skipLibCheck benchmarks/run.ts"
   },
   "files": [
     "lib",

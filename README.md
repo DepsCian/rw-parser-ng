@@ -74,9 +74,21 @@ for (const texture of txd.textureDictionary.textureNatives) {
     console.log(texture.textureName);    // Texture name
     console.log(texture.width, texture.height);
     console.log(texture.d3dFormat);      // DXT1, DXT3, DXT5, etc.
-    console.log(texture.mipmaps[0]);     // Decoded BGRA pixel data
+    console.log(texture.mipmaps[0]);     // Decoded RGBA pixel data
 }
 ```
+
+For metadata and encoded mipmaps without pixel decoding:
+
+```typescript
+import { TxdParser, decodeTextureMipmap } from 'rwkit';
+
+const structure = new TxdParser(buffer).parseStructure();
+const texture = structure.textureDictionary.textureNatives[0];
+const pixels = decodeTextureMipmap(texture, 0);
+```
+
+Each encoded mipmap has `width`, `height`, and `data: Uint8Array`. Decoded pixels are RGBA bytes. Structure data shares the input buffer by default; use `parseStructure({ copyData: true })` for independent storage. See [TXD parsing](src/txd/README.md) for ownership and error behavior.
 
 ### IFP (Animations)
 
@@ -176,7 +188,7 @@ interface RwTextureNative {
     height: number;
     depth: number;                     // Bits per pixel
     d3dFormat: string;                 // DXT1, DXT3, DXT5, etc.
-    mipmaps: number[][];               // Decoded BGRA data
+    mipmaps: number[][];               // Decoded RGBA data
     alpha: boolean;
     compressed: boolean;
 }

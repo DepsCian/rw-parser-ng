@@ -26,3 +26,5 @@ Performance workloads live in benchmarks/ and run against compiled lib output wi
 ByteStream.readView returns shared input storage; read/readBytes retain copy semantics. Views outlive disposal and can retain the backing buffer.
 
 DXT decoders clip partial block writes but consume all encoded selectors. Preserve this behavior for small and non-multiple-of-four mip dimensions. Codec output is RGBA.
+
+TXD parseStructure retains encoded mip levels and palettes with shared views by default; copyData opts into copies. decodeTextureMipmap derives fresh RGBA pixels without caching. Legacy parse/readers still decode only the first mip to number arrays. Native payloads must remain inside their declared section.
